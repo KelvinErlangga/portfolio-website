@@ -527,7 +527,7 @@ header .navbar ul li a:hover {
   .skills .container {
     margin-top: 5px;
     width: 100%;
-    min-height: 100vh;
+    min-height: 110vh;
   }
 }
 /* skills media queries ends*/
