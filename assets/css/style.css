@@ -328,6 +328,9 @@ header .navbar ul li a:hover {
   .home .btn {
     margin: 4rem 0;
   }
+  .home h2 {
+    margin-top: 4rem;
+  }
   .socials {
     margin-top: 12rem;
   }
