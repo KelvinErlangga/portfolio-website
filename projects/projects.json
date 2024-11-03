@@ -1,153 +1,172 @@
 [
-    {
-      "name": "Go Up Leuwimalang MERN",
-      "desc": "Full-Stack Instagram clone built using MERN stack and realtime chat with the help of socket.iO",
-      "image": "gul",
-      "category": "mern",
-      "links": {
-        "view": "https://go-up-leuwimalang.vercel.app/",
-        "code": "https://github.com/lluuvvii/go-up-leuwimalang"
-      }
-    },
-    {
-      "name": "Portfolio Mobile App",
-      "desc": "Full-Stack project dashboard which is collection of projects built on the React library.",
-      "image": "portfolio",
-      "category": "mobile",
-      "links": {
-        "view": "#",
-        "code": "https://github.com/KelvinErlangga/maxy-academy-msib7/tree/main/day38_react_native_session2"
-      }
-    },
-    {
-      "name": "Vinstay MERN",
-      "desc": "Full-Stack Flipkart with Admin Dashboard and Paytm Payment Gateway. MERN Stack WebApp, ready to use for business.",
-      "image": "vinstay",
-      "category": "mern",
-      "links": {
-        "view": "https://vinstay.vercel.app/",
-        "code": "https://github.com/KelvinErlangga/website-pemesanan-tempat-tinggal-online"
-      }
-    },
-    {
-      "name": "To-Do List Mobile App",
-      "desc": "Full-Stack project dashboard which is collection of projects built on the React library.",
-      "image": "todolist",
-      "category": "mobile",
-      "links": {
-        "view": "#",
-        "code": "https://github.com/KelvinErlangga/maxy-academy-msib7/tree/main/day41_react_native_session4"
-      }
-    },
-    {
-        "name": "Cinevibes",
-        "desc": "Full-Stack Flipkart Clone Using LAMP Stack. With all major features and OTP authentication and Cashfree payment gateway.",
-        "image": "cinevibes",
-        "category": "basicweb",
-        "links": {
-          "view": "https://cinevibes-movie.vercel.app/",
-          "code": "https://github.com/KelvinErlangga/cinevibes"
-        }
-      },
-    {
-      "name": "SmartHub Mobile App",
-      "desc": "Full-Stack project dashboard which is collection of projects built on the React library.",
-      "image": "daily",
-      "category": "mobile",
-      "links": {
-        "view": "#",
-        "code": "https://github.com/KelvinErlangga/maxy-academy-msib7/tree/main/day39_react_native_session3"
-      }
-    },
-    {
-        "name": "Katasaya",
-        "desc": "Full-Stack project dashboard which is collection of projects built on the React library.",
-        "image": "katasaya",
-        "category": "basicweb",
-      "links": {
-          "view": "https://katasaya.vercel.app/",
-          "code": "https://github.com/KelvinErlangga/aplikasi-hitung-kata-karakter"
-        }
-    },
-    {
-      "name": "Quickmart",
-      "desc": "This website is specially build to showcase all major javaScript projects. All my javaScript based projects are in it.",
-      "image": "quickmart",
-      "category": "basicweb",
-      "links": {
-        "view": "https://quickmart-flash.netlify.app/",
-        "code": "https://github.com/KelvinErlangga/quickmart"
-      }
-    },
-    {
-        "name": "Cinemavin",
-        "desc": "ReactJS Basic Resume Generator which will generate customized resume in few minutes on your requirements.",
-        "image": "cinemavin",
-        "category": "basicweb",
-        "links": {
-          "view": "https://cinemavin.vercel.app/",
-          "code": "https://github.com/KelvinErlangga/movie-catalog-site"
-        }
-      },
-    {
-      "name": "Mr. Suprek",
-      "desc": "This website is specially build to showcase all major javaScript projects. All my javaScript based projects are in it.",
-      "image": "suprek",
-      "category": "basicweb",
-      "links": {
-        "view": "https://mrsuprek.vercel.app/",
-        "code": "https://github.com/KelvinErlangga/quickmart"
-      }
-    },
-    {
-      "name": "Celebratix",
-      "desc": "This website is specially build to showcase all major javaScript projects. All my javaScript based projects are in it.",
-      "image": "celebratix",
-      "category": "basicweb",
-      "links": {
-        "view": "https://celebratix.netlify.app/",
-        "code": "https://github.com/KelvinErlangga/celebratix"
-      }
-    },
-    {
-      "name": "World Unity Alliance",
-      "desc": "This website is specially build to showcase all major javaScript projects. All my javaScript based projects are in it.",
-      "image": "WUA",
-      "category": "basicweb",
-      "links": {
-        "view": "https://world-ua.netlify.app/",
-        "code": "https://github.com/KelvinErlangga/konferensi"
-      }
-    },
-    {
-      "name": "Visiting Jatim",
-      "desc": "This website is specially build to showcase all major javaScript projects. All my javaScript based projects are in it.",
-      "image": "visitingjatim",
-      "category": "basicweb",
-      "links": {
-        "view": "https://visiting-jatim.netlify.app/",
-        "code": "https://github.com/KelvinErlangga/visiting-jatim"
-      }
-    },
-    {
-      "name": "Booknest",
-      "desc": "This website is specially build to showcase all major javaScript projects. All my javaScript based projects are in it.",
-      "image": "booknest",
-      "category": "basicweb",
-      "links": {
-        "view": "https://booknest-library.netlify.app/",
-        "code": "https://github.com/KelvinErlangga/book-library"
-      }
-    },
-    {
-      "name": "SPT Company",
-      "desc": "This website is specially build to showcase all major javaScript projects. All my javaScript based projects are in it.",
-      "image": "spt",
-      "category": "basicweb",
-      "links": {
-        "view": "https://spt-company.netlify.app/",
-        "code": "https://github.com/KelvinErlangga/company-landingpage"
-      }
+  {
+    "name": "Go Up Leuwimalang MERN",
+    "desc": "Full-Stack Instagram clone built using MERN stack and realtime chat with the help of socket.iO",
+    "image": "gul",
+    "category": "mern",
+    "links": {
+      "view": "https://go-up-leuwimalang.vercel.app/",
+      "code": "https://github.com/lluuvvii/go-up-leuwimalang"
     }
-  ]
-  
+  },
+  {
+    "name": "Portfolio Mobile App",
+    "desc": "Full-Stack project dashboard which is collection of projects built on the React library.",
+    "image": "portfolio",
+    "category": "mobile",
+    "links": {
+      "view": "#",
+      "code": "https://github.com/KelvinErlangga/maxy-academy-msib7/tree/main/day38_react_native_session2"
+    }
+  },
+  {
+    "name": "Vinstay MERN",
+    "desc": "Full-Stack Flipkart with Admin Dashboard and Paytm Payment Gateway. MERN Stack WebApp, ready to use for business.",
+    "image": "vinstay",
+    "category": "mern",
+    "links": {
+      "view": "https://vinstay.vercel.app/",
+      "code": "https://github.com/KelvinErlangga/website-pemesanan-tempat-tinggal-online"
+    }
+  },
+  {
+    "name": "To-Do List Mobile App",
+    "desc": "Full-Stack project dashboard which is collection of projects built on the React library.",
+    "image": "todolist",
+    "category": "mobile",
+    "links": {
+      "view": "#",
+      "code": "https://github.com/KelvinErlangga/maxy-academy-msib7/tree/main/day41_react_native_session4"
+    }
+  },
+  {
+    "name": "Cinevibes",
+    "desc": "Full-Stack Flipkart Clone Using LAMP Stack. With all major features and OTP authentication and Cashfree payment gateway.",
+    "image": "cinevibes",
+    "category": "basicweb",
+    "links": {
+      "view": "https://cinevibes-movie.vercel.app/",
+      "code": "https://github.com/KelvinErlangga/cinevibes"
+    }
+  },
+  {
+    "name": "SmartHub Mobile App",
+    "desc": "Full-Stack project dashboard which is collection of projects built on the React library.",
+    "image": "daily",
+    "category": "mobile",
+    "links": {
+      "view": "#",
+      "code": "https://github.com/KelvinErlangga/maxy-academy-msib7/tree/main/day39_react_native_session3"
+    }
+  },
+  {
+    "name": "Weather App",
+    "desc": "Full-Stack project dashboard which is collection of projects built on the React library.",
+    "image": "weather",
+    "category": "basicweb",
+    "links": {
+      "view": "http://weather-app.infinityfreeapp.com/",
+      "code": "https://github.com/KelvinErlangga/Weather-App"
+    }
+  },
+  {
+    "name": "Sistem Informasi Akademik",
+    "desc": "Full-Stack project dashboard which is collection of projects built on the React library.",
+    "image": "siakad",
+    "category": "basicweb",
+    "links": {
+      "view": "#",
+      "code": "https://github.com/KelvinErlangga/sistem-informasi-manajemen-akademik"
+    }
+  },
+  {
+    "name": "Katasaya",
+    "desc": "Full-Stack project dashboard which is collection of projects built on the React library.",
+    "image": "katasaya",
+    "category": "basicweb",
+    "links": {
+      "view": "https://katasaya.vercel.app/",
+      "code": "https://github.com/KelvinErlangga/aplikasi-hitung-kata-karakter"
+    }
+  },
+  {
+    "name": "Quickmart",
+    "desc": "This website is specially build to showcase all major javaScript projects. All my javaScript based projects are in it.",
+    "image": "quickmart",
+    "category": "basicweb",
+    "links": {
+      "view": "https://quickmart-flash.netlify.app/",
+      "code": "https://github.com/KelvinErlangga/quickmart"
+    }
+  },
+  {
+    "name": "Cinemavin",
+    "desc": "ReactJS Basic Resume Generator which will generate customized resume in few minutes on your requirements.",
+    "image": "cinemavin",
+    "category": "basicweb",
+    "links": {
+      "view": "https://cinemavin.vercel.app/",
+      "code": "https://github.com/KelvinErlangga/movie-catalog-site"
+    }
+  },
+  {
+    "name": "Mr. Suprek",
+    "desc": "This website is specially build to showcase all major javaScript projects. All my javaScript based projects are in it.",
+    "image": "suprek",
+    "category": "basicweb",
+    "links": {
+      "view": "https://mrsuprek.vercel.app/",
+      "code": "https://github.com/KelvinErlangga/quickmart"
+    }
+  },
+  {
+    "name": "Celebratix",
+    "desc": "This website is specially build to showcase all major javaScript projects. All my javaScript based projects are in it.",
+    "image": "celebratix",
+    "category": "basicweb",
+    "links": {
+      "view": "https://celebratix.netlify.app/",
+      "code": "https://github.com/KelvinErlangga/celebratix"
+    }
+  },
+  {
+    "name": "World Unity Alliance",
+    "desc": "This website is specially build to showcase all major javaScript projects. All my javaScript based projects are in it.",
+    "image": "WUA",
+    "category": "basicweb",
+    "links": {
+      "view": "https://world-ua.netlify.app/",
+      "code": "https://github.com/KelvinErlangga/konferensi"
+    }
+  },
+  {
+    "name": "Visiting Jatim",
+    "desc": "This website is specially build to showcase all major javaScript projects. All my javaScript based projects are in it.",
+    "image": "visitingjatim",
+    "category": "basicweb",
+    "links": {
+      "view": "https://visiting-jatim.netlify.app/",
+      "code": "https://github.com/KelvinErlangga/visiting-jatim"
+    }
+  },
+  {
+    "name": "Booknest",
+    "desc": "This website is specially build to showcase all major javaScript projects. All my javaScript based projects are in it.",
+    "image": "booknest",
+    "category": "basicweb",
+    "links": {
+      "view": "https://booknest-library.netlify.app/",
+      "code": "https://github.com/KelvinErlangga/book-library"
+    }
+  },
+  {
+    "name": "SPT Company",
+    "desc": "This website is specially build to showcase all major javaScript projects. All my javaScript based projects are in it.",
+    "image": "spt",
+    "category": "basicweb",
+    "links": {
+      "view": "https://spt-company.netlify.app/",
+      "code": "https://github.com/KelvinErlangga/company-landingpage"
+    }
+  }
+]

@@ -1214,7 +1214,7 @@ form .button-area {
 #scroll-top {
   position: fixed;
   top: -140%;
-  right: 2rem;
+  right: 3.5rem;
   padding: 1rem 1.5rem;
   font-size: 2rem;
   background: #ffae00;
@@ -1224,6 +1224,6 @@ form .button-area {
   z-index: 1000;
 }
 #scroll-top.active {
-  top: calc(100% - 12rem);
+  top: calc(90% - 10rem);
 }
 /* scroll top ends */
