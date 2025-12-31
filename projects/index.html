@@ -1,99 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./style.css">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link id='favicon' rel="shortcut icon" href="/assets/images/hero.jpg" type="image/x-png">
-    <title>Projects | Portfolio Kelvin Erlangga</title>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Pakai style projects (yang import landing style) -->
+  <link rel="stylesheet" href="./style.css" />
+  <link id="favicon" rel="shortcut icon" href="/assets/images/hero2.jpg" type="image/x-png" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+        integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <title>Projects | Kelvin Erlangga</title>
 </head>
-<body oncontextmenu="return false">
 
-<!-- navbar starts -->
-<header>
-        <a href="/" class="logo"><i class="fab fa-node-js"></i> Kelvin</a>
+<body>
 
-        <div id="menu" class="fas fa-bars"></div>
-        <nav class="navbar">
-            <ul>
-            <li><a href="/#home">Home</a></li>
-            <li><a href="/#about">About</a></li>
-            <li><a href="/#skills">Skills</a></li>
-            <li><a href="/#education">Education</a></li>
-            <li><a class="active" href="/#work">Work</a></li>
-            <li><a href="/#experience">Experience</a></li>
-            <li><a href="/#contact">Contact</a></li>
-            </ul>
-        </nav>
-</header>
-<!-- navbar ends -->
+  <!-- Ambient blobs (sama seperti landing) -->
+  <div class="bg-blob blob-1" aria-hidden="true"></div>
+  <div class="bg-blob blob-2" aria-hidden="true"></div>
 
-<!-- work project section starts -->
-<section class="work" id="work">
+  <!-- Header (styling sama konsep dengan landing: brand kiri, action kanan, center area tetap rapi) -->
+  <header class="site-header projects-header">
+    <a class="brand" href="/#home" aria-label="Back to home">
+      <span class="brand-dot" aria-hidden="true"></span>
+      <span class="brand-text">Kelvin</span>
+    </a>
 
-  <h2 class="heading"><i class="fas fa-laptop-code"></i> Projects <span>Made</span></h2>
-  
-  <div id="filters" class="button-group">
-    <button class="btn is-checked" data-filter="*">All Projects</button>
-    <button class="btn" data-filter=".mern">MERN Stack</button>
-    <button class="btn" data-filter=".basicweb">Basic Web</button>
-    <button class="btn" data-filter=".mobile">Mobile App</button>
-  </div>
+    <a class="btn ghost back-btn" href="/?to=work" aria-label="Back to Work section">
+      <i class="fas fa-arrow-left"></i> Back
+    </a>
+  </header>
 
-  <div class="box-container">
+  <!-- Smooth wrapper (sama seperti landing page) -->
+  <div id="smooth-wrapper">
+    <div id="smooth-content">
 
-    <!-- <div class="box tilt">
-      <img src="/assets/images/projects/agecalc.PNG" alt="" />
-      <div class="content">
-        <div class="tag">
-        <h3>Portfolio Website</h3>
-        </div>
-        <div class="desc">
-          <p>Personal portfolio website. Don't need much info about it, just scroll down. You're here only!</p>
-          <div class="btns">
-            <a href="#" class="btn" target="_blank"><i class="fas fa-eye"></i> View</a>
-            <a href="#" class="btn" target="_blank">Code <i class="fas fa-code"></i></a>
+      <main>
+        <section class="section projects-page" id="projects">
+          <div class="container section-head">
+            <h1 class="section-title">Projects</h1>
+
+            <div class="filters" id="filters" aria-label="Project filters">
+              <button class="btn ghost small filter-btn is-active" data-filter="all" type="button">All</button>
+              <button class="btn ghost small filter-btn" data-filter="mern" type="button">MERN Stack</button>
+              <button class="btn ghost small filter-btn" data-filter="basicweb" type="button">Basic Web</button>
+              <button class="btn ghost small filter-btn" data-filter="mobile" type="button">Mobile App</button>
+            </div>
           </div>
+
+          <div class="container">
+            <div class="projects-grid projects-grid--page" id="projectsGrid">
+              <!-- injected by JS -->
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <div class="container footer-inner">
+          <p>© <span id="year"></span> Kelvin Erlangga. All rights reserved.</p>
         </div>
-      </div>
-    </div> -->   
+      </footer>
 
+    </div>
   </div>
 
-  <div class="backbtn">
-    <a href="/#work" class="btn">
-        <i class="fas fa-arrow-left"></i>
-        <span>Back to Home</span>
-  </a>
-  </div>
+  <!-- Scroll Top (sama) -->
+  <button class="scroll-top" id="scrollTop" aria-label="Scroll to top">
+    <i class="fas fa-angle-up"></i>
+  </button>
 
-</section>
-<!-- work project section ends -->
+  <!-- GSAP -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollToPlugin.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/TextPlugin.min.js"></script>
 
-<!-- scroll top btn -->
-<a href="#work" class="fas fa-angle-up" id="scroll-top"></a>
-<!-- scroll back to top -->
-
-
-<!-- ==== ALL MAJOR JAVASCRIPT CDNS STARTS ==== -->
-<!-- jquery cdn -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-<!-- vanilla tilt.js links -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js" integrity="sha512-SttpKhJqONuBVxbRcuH0wezjuX+BoFoli0yPsnrAADcHsQMW8rkR84ItFHGIkPvhnlRnE2FaifDOUw+EltbuHg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-<!-- scroll reveal anim -->
-<script src="https://unpkg.com/scrollreveal"></script>
-
-<!-- isotope filter plugin cdn -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha512-Zq2BOxyhvnRFXu0+WE6ojpZLOU2jdnqbrM1hmVdGzyeCa1DgM3X5Q4A/Is9xA1IkbUeDd7755dNNI/PzSf2Pew==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-<!-- ==== ALL MAJOR JAVASCRIPT CDNS ENDS ==== -->
-
-<script src="./script.js"></script>
-
+  <script src="./script.js"></script>
 </body>
 </html>

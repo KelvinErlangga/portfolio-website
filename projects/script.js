@@ -1,137 +1,349 @@
-$(document).ready(function () {
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, TextPlugin);
 
-    $('#menu').click(function () {
-        $(this).toggleClass('fa-times');
-        $('.navbar').toggleClass('nav-toggle');
-    });
+const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    $(window).on('scroll load', function () {
-        $('#menu').removeClass('fa-times');
-        $('.navbar').removeClass('nav-toggle');
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
 
-        if (window.scrollY > 60) {
-            document.querySelector('#scroll-top').classList.add('active');
-        } else {
-            document.querySelector('#scroll-top').classList.remove('active');
-        }
-    });
-});
+gsap.config({ nullTargetWarn: false });
+ScrollTrigger.config({ ignoreMobileResize: true });
 
-document.addEventListener('visibilitychange',
-    function () {
-        if (document.visibilityState === "visible") {
-            document.title = "Projects | Portfolio Jigar Sable";
-            $("#favicon").attr("href", "/assets/images/favicon.png");
-        }
-        else {
-            document.title = "Come Back To Portfolio";
-            $("#favicon").attr("href", "/assets/images/favhand.png");
-        }
-    });
-
-
-// fetch projects start
-function getProjects() {
-    return fetch("projects.json")
-        .then(response => response.json())
-        .then(data => {
-            return data
-        });
+function safeJSONFetch(url) {
+  return fetch(url).then(r => {
+    if (!r.ok) throw new Error(`Failed to fetch ${url}`);
+    return r.json();
+  });
 }
 
+function setYear() {
+  const y = $("#year");
+  if (y) y.textContent = new Date().getFullYear();
+}
 
-function showProjects(projects) {
-    let projectsContainer = document.querySelector(".work .box-container");
-    let projectsHTML = "";
-    projects.forEach(project => {
-        projectsHTML += `
-        <div class="grid-item ${project.category}">
-        <div class="box tilt" style="width: 350px; margin: 1rem">
-      <img draggable="false" src="/assets/images/projects/${project.image}.png" alt="project" />
-      <div class="content">
-        <div class="tag">
-        <h3>${project.name}</h3>
-        </div>
-        <div class="desc">
-          <p>${project.desc}</p>
-          <div class="btns">
-            <a href="${project.links.view}" class="btn" target="_blank"><i class="fas fa-eye"></i> View</a>
-            <a href="${project.links.code}" class="btn" target="_blank">Code <i class="fas fa-code"></i></a>
-          </div>
+/* =============================
+   SMOOTH SCROLLER (same feel)
+============================= */
+let smoothApi = null;
+
+function initSmoothScroller() {
+  if (reducedMotion) return null;
+
+  const content = $("#smooth-content");
+  if (!content) return null;
+
+  let current = 0;
+  let target = 0;
+  const ease = 0.085;
+
+  const dpr = window.devicePixelRatio || 1;
+
+  function setBodyHeight() {
+    document.body.style.height = `${content.scrollHeight}px`;
+  }
+
+  function onResize() {
+    setBodyHeight();
+    ScrollTrigger.refresh();
+  }
+
+  ScrollTrigger.scrollerProxy(document.body, {
+    scrollTop(value) {
+      if (arguments.length) window.scrollTo(0, value);
+      return target;
+    },
+    getBoundingClientRect() {
+      return { top: 0, left: 0, width: innerWidth, height: innerHeight };
+    },
+    pinType: "transform"
+  });
+
+  ScrollTrigger.addEventListener("refreshInit", setBodyHeight);
+  window.addEventListener("resize", onResize);
+
+  setBodyHeight();
+  target = window.scrollY || 0;
+  current = target;
+
+  gsap.ticker.add(() => {
+    target = window.scrollY || 0;
+    current += (target - current) * ease;
+
+    const snapped = Math.round(current * dpr) / dpr;
+    content.style.transform = `translate3d(0, ${-snapped}px, 0)`;
+
+    ScrollTrigger.update();
+  });
+
+  ScrollTrigger.refresh();
+
+  return {
+    refreshHeight: () => {
+      setBodyHeight();
+      ScrollTrigger.refresh();
+    }
+  };
+}
+
+/* =============================
+   BLOBS PARALLAX (same)
+============================= */
+function initBlobParallax() {
+  if (reducedMotion) return;
+
+  gsap.to(".blob-1", {
+    x: 90,
+    y: -120,
+    scrollTrigger: {
+      trigger: "#smooth-content",
+      start: "top top",
+      end: "bottom bottom",
+      scrub: 1
+    }
+  });
+
+  gsap.to(".blob-2", {
+    x: -80,
+    y: 140,
+    scrollTrigger: {
+      trigger: "#smooth-content",
+      start: "top top",
+      end: "bottom bottom",
+      scrub: 1
+    }
+  });
+}
+
+/* =============================
+   SECTION REVEALS
+============================= */
+function initSectionReveals() {
+  if (reducedMotion) return;
+
+  ScrollTrigger.batch(".section-head", {
+    start: "top 85%",
+    onEnter: (batch) =>
+      gsap.fromTo(
+        batch,
+        { y: 22, autoAlpha: 0 },
+        { y: 0, autoAlpha: 1, duration: 0.8, ease: "power3.out", stagger: 0.12 }
+      ),
+    once: true
+  });
+}
+
+/* =============================
+   SCROLL TOP
+============================= */
+function initScrollTop() {
+  const btn = $("#scrollTop");
+  if (!btn) return;
+
+  btn.addEventListener("click", () => {
+    gsap.to(window, {
+      duration: reducedMotion ? 0 : 1.05,
+      scrollTo: { y: 0 },
+      ease: "power3.inOut"
+    });
+  });
+
+  ScrollTrigger.create({
+    start: 200,
+    onUpdate: (self) => {
+      const show = self.scroll() > 260;
+      gsap.to(btn, {
+        autoAlpha: show ? 1 : 0,
+        y: show ? 0 : 14,
+        duration: 0.22,
+        ease: "power2.out",
+        pointerEvents: show ? "auto" : "none"
+      });
+    }
+  });
+}
+
+/* =============================
+   PREMIUM HOVERS (same as landing)
+============================= */
+function bindMagnetic(el, strength = 10) {
+  if (reducedMotion) return;
+  if (!el || el.dataset.magBound === "1") return;
+  el.dataset.magBound = "1";
+
+  const xTo = gsap.quickTo(el, "x", { duration: 0.35, ease: "power3.out" });
+  const yTo = gsap.quickTo(el, "y", { duration: 0.35, ease: "power3.out" });
+
+  el.addEventListener("mousemove", (e) => {
+    const r = el.getBoundingClientRect();
+    const dx = (e.clientX - (r.left + r.width / 2)) / (r.width / 2);
+    const dy = (e.clientY - (r.top + r.height / 2)) / (r.height / 2);
+    xTo(dx * strength);
+    yTo(dy * strength);
+  });
+
+  el.addEventListener("mouseleave", () => {
+    xTo(0);
+    yTo(0);
+  });
+}
+
+function bindTilt(el, maxRotate = 4) {
+  if (reducedMotion) return;
+  if (!el || el.dataset.tiltBound === "1") return;
+  el.dataset.tiltBound = "1";
+
+  gsap.set(el, { transformPerspective: 800, transformOrigin: "center" });
+
+  const rxTo = gsap.quickTo(el, "rotationX", { duration: 0.35, ease: "power3.out" });
+  const ryTo = gsap.quickTo(el, "rotationY", { duration: 0.35, ease: "power3.out" });
+  const scTo = gsap.quickTo(el, "scale", { duration: 0.35, ease: "power3.out" });
+
+  el.addEventListener("mousemove", (e) => {
+    const r = el.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width;
+    const py = (e.clientY - r.top) / r.height;
+    const rotY = (px - 0.5) * maxRotate * 2;
+    const rotX = -(py - 0.5) * maxRotate * 2;
+
+    rxTo(rotX);
+    ryTo(rotY);
+    scTo(1.01);
+  });
+
+  el.addEventListener("mouseleave", () => {
+    rxTo(0);
+    ryTo(0);
+    scTo(1);
+  });
+}
+
+function applyPremiumHovers() {
+  // tombol (Back, filter, dll)
+  $$(".btn").forEach(el => bindMagnetic(el, 10));
+
+  // filter lebih kerasa
+  $$(".filter-btn").forEach(el => bindMagnetic(el, 12));
+
+  // card projects: magnetic + tilt
+  $$(".project-card").forEach(el => {
+    bindMagnetic(el, 10);
+    bindTilt(el, 4);
+  });
+}
+
+/* =============================
+   PROJECTS + FILTER
+============================= */
+let allProjects = [];
+let currentFilter = "all";
+
+function renderProjects(list) {
+  const grid = $("#projectsGrid");
+  if (!grid) return;
+
+  grid.innerHTML = list.map(p => `
+    <article class="card project-card" data-cat="${p.category}">
+      <img class="project-img" src="/assets/images/projects/${p.image}.png" alt="${p.name}" loading="lazy" />
+      <div class="project-body">
+        <h3>${p.name}</h3>
+        <p>${p.desc}</p>
+        <div class="project-actions">
+          <a class="btn ghost small" href="${p.links.view}" target="_blank" rel="noreferrer">
+            View <i class="fas fa-eye"></i>
+          </a>
+          <a class="btn ghost small" href="${p.links.code}" target="_blank" rel="noreferrer">
+            Code <i class="fas fa-code"></i>
+          </a>
         </div>
       </div>
-    </div>
-    </div>`
-    });
-    projectsContainer.innerHTML = projectsHTML;
+    </article>
+  `).join("");
 
-    // vanilla tilt.js
-    // VanillaTilt.init(document.querySelectorAll(".tilt"), {
-    //     max: 20,
-    // });
-    // // vanilla tilt.js  
+  if (!reducedMotion) {
+    gsap.fromTo($$(".project-card", grid),
+      { y: 26, autoAlpha: 0, scale: 0.985 },
+      { y: 0, autoAlpha: 1, scale: 1, duration: 0.7, ease: "power3.out", stagger: 0.06 }
+    );
+  }
 
-    // /* ===== SCROLL REVEAL ANIMATION ===== */
-    // const srtop = ScrollReveal({
-    //     origin: 'bottom',
-    //     distance: '80px',
-    //     duration: 1000,
-    //     reset: true
-    // });
+  // IMPORTANT: setelah DOM baru dibuat, hover harus di-bind ulang
+  applyPremiumHovers();
 
-    // /* SCROLL PROJECTS */
-    // srtop.reveal('.work .box', { interval: 200 });
-
-    // isotope filter products
-    var $grid = $('.box-container').isotope({
-        itemSelector: '.grid-item',
-        layoutMode: 'fitRows',
-        masonry: {
-            columnWidth: 200
-        }
-    });
-
-    // filter items on button click
-    $('.button-group').on('click', 'button', function () {
-        $('.button-group').find('.is-checked').removeClass('is-checked');
-        $(this).addClass('is-checked');
-        var filterValue = $(this).attr('data-filter');
-        $grid.isotope({ filter: filterValue });
-    });
+  // refresh height (smooth scroller)
+  if (smoothApi) setTimeout(() => smoothApi.refreshHeight(), 50);
+  else ScrollTrigger.refresh();
 }
 
-getProjects().then(data => {
-    showProjects(data);
-})
-// fetch projects end
+function applyFilter(filter) {
+  currentFilter = filter;
 
-// Start of Tawk.to Live Chat
-var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
-(function () {
-    var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
-    s1.async = true;
-    s1.src = 'https://embed.tawk.to/60df10bf7f4b000ac03ab6a8/1f9jlirg6';
-    s1.charset = 'UTF-8';
-    s1.setAttribute('crossorigin', '*');
-    s0.parentNode.insertBefore(s1, s0);
-})();
-// End of Tawk.to Live Chat
+  let filtered = allProjects;
+  if (filter !== "all") {
+    filtered = allProjects.filter(p => p.category === filter);
+  }
 
-// disable developer mode
-document.onkeydown = function (e) {
-    if (e.keyCode == 123) {
-        return false;
-    }
-    if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) {
-        return false;
-    }
-    if (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) {
-        return false;
-    }
-    if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) {
-        return false;
-    }
-    if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) {
-        return false;
-    }
+  const grid = $("#projectsGrid");
+  if (!grid) return;
+
+  if (reducedMotion) {
+    renderProjects(filtered);
+    return;
+  }
+
+  const oldCards = $$(".project-card", grid);
+  gsap.to(oldCards, {
+    y: 14,
+    autoAlpha: 0,
+    scale: 0.99,
+    duration: 0.22,
+    stagger: 0.02,
+    ease: "power2.in",
+    onComplete: () => renderProjects(filtered)
+  });
 }
+
+function initFilters() {
+  const wrap = $("#filters");
+  if (!wrap) return;
+
+  wrap.addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-filter]");
+    if (!btn) return;
+
+    $$(".filter-btn", wrap).forEach(b => b.classList.remove("is-active"));
+    btn.classList.add("is-active");
+
+    applyFilter(btn.dataset.filter);
+  });
+}
+
+/* =============================
+   INIT
+============================= */
+window.addEventListener("load", async () => {
+  setYear();
+
+  smoothApi = initSmoothScroller();
+  initBlobParallax();
+  initSectionReveals();
+  initFilters();
+  initScrollTop();
+
+  try {
+    allProjects = await safeJSONFetch("./projects.json");
+    renderProjects(allProjects);
+  } catch (e) {
+    console.error(e);
+    const grid = $("#projectsGrid");
+    if (grid) grid.innerHTML = `<p class="muted">Failed to load projects.json</p>`;
+  }
+
+  // bind hovers for header buttons (Back) juga
+  applyPremiumHovers();
+
+  if (!reducedMotion) {
+    setTimeout(() => {
+      if (smoothApi) smoothApi.refreshHeight();
+      else ScrollTrigger.refresh();
+    }, 250);
+  }
+});
