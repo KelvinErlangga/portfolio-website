@@ -203,13 +203,20 @@ img{ max-width: 100%; display: block; }
   inset: 0;
   z-index: 1200;
   display: none;
+
+  /* penting: bikin stacking context biar z-index anak-anaknya stabil */
+  isolation: isolate;
 }
+
 .mobile-nav__backdrop{
   position: absolute;
   inset: 0;
   background: rgba(0,0,0,0.55);
   backdrop-filter: blur(2px);
+
+  z-index: 0; /* backdrop di bawah */
 }
+
 .mobile-nav__panel{
   position: absolute;
   top: 0;
@@ -222,7 +229,10 @@ img{ max-width: 100%; display: block; }
   padding: 16px;
   display: flex;
   flex-direction: column;
+
+  z-index: 1; /* panel di atas */
 }
+
 .mobile-nav__top{
   display:flex;
   align-items:center;
