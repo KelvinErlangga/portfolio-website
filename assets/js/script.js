@@ -55,7 +55,7 @@ function safeJSONFetch(url) {
 // SMOOTH SCROLLER (FREE ScrollSmoother-like)
 // =============================
 function initSmoothScroller() {
-  if (reducedMotion || ScrollTrigger.isTouch === 1) return;
+  if (reducedMotion) return;
 
   const wrapper = document.querySelector("#smooth-wrapper");
   const content = document.querySelector("#smooth-content");
@@ -63,20 +63,12 @@ function initSmoothScroller() {
 
   let current = 0;
   let target = 0;
-  const ease = 0.085; // Kurangi easing agar lebih responsif
-  let rafId = null;
-  
-  // Bersihkan RAF sebelumnya untuk mencegah lag
-  if (rafId) {
-    cancelAnimationFrame(rafId);
-    rafId = null;
-  }
+  const ease = 0.085;
 
-  function lerp(start, end, factor) {
-    return start * (1 - factor) + end * factor;
-  }
+  const dpr = window.devicePixelRatio || 1;
 
   function setBodyHeight() {
+    // scrollHeight lebih stabil daripada getBoundingClientRect() untuk kasus ini
     const h = content.scrollHeight;
     document.body.style.height = `${h}px`;
   }
@@ -86,18 +78,16 @@ function initSmoothScroller() {
     ScrollTrigger.refresh();
   }
 
-  // proxy untuk ScrollTrigger
+  // proxy untuk ScrollTrigger (karena content digeser via transform)
   ScrollTrigger.scrollerProxy(document.body, {
     scrollTop(value) {
-      if (arguments.length) {
-        window.scrollTo(0, value);
-      }
+      if (arguments.length) window.scrollTo(0, value);
       return target;
     },
     getBoundingClientRect() {
       return { top: 0, left: 0, width: innerWidth, height: innerHeight };
     },
-    pinType: wrapper.style.transform ? "transform" : "fixed"
+    pinType: "transform"
   });
 
   ScrollTrigger.addEventListener("refreshInit", setBodyHeight);
@@ -107,121 +97,21 @@ function initSmoothScroller() {
   target = window.scrollY || 0;
   current = target;
 
-  // Optimasi: Gunakan requestAnimationFrame yang efisien
-  function updateSmoothScroll() {
+  gsap.ticker.add(() => {
     target = window.scrollY || 0;
-    
-    // Hindari overshoot dengan clamp
-    const diff = target - current;
-    if (Math.abs(diff) < 0.05) {
-      current = target;
-    } else {
-      current += diff * ease;
-    }
+    current += (target - current) * ease;
 
-    // PENTING: Apply transform hanya jika ada perubahan signifikan
-    if (Math.abs(target - current) > 0.5) {
-      // Gunakan translateY saja untuk performa lebih baik
-      content.style.transform = `translateY(${-current}px)`;
-      
-      // Update ScrollTrigger
-      ScrollTrigger.update();
-    }
-    
-    rafId = requestAnimationFrame(updateSmoothScroll);
-  }
+    // SNAP ke pixel device (INI kunci ngilangin hairline)
+    const snapped = Math.round(current * dpr) / dpr;
 
-  // Start the animation loop
-  updateSmoothScroll();
+    // pakai translate3d biar rendering lebih stabil
+    content.style.transform = `translate3d(0, ${-snapped}px, 0)`;
 
-  // Cleanup function
-  return () => {
-    if (rafId) {
-      cancelAnimationFrame(rafId);
-      rafId = null;
-    }
-    ScrollTrigger.removeEventListener("refreshInit", setBodyHeight);
-    window.removeEventListener("resize", onResize);
-  };
-}
-
-// =============================
-// INIT
-// =============================
-window.addEventListener("load", async () => {
-  setYear();
-  
-  const deepId = getDeepTargetId();
-  
-  window.scrollTo(0, 0);
-  
-  let cleanupSmoothScroll = null;
-  
-  // Hanya jalankan smooth scroll jika bukan mobile
-  if (!reducedMotion && ScrollTrigger.isTouch !== 1) {
-    cleanupSmoothScroll = initSmoothScroller();
-  }
-  
-  initMobileDrawer();
-  initSmoothScroll();
-  initScrollSpy();
-  initNavbarScrollState();
-
-  if (deepId) {
-    requestAnimationFrame(() => {
-      if (!reducedMotion && ScrollTrigger.isTouch !== 1) {
-        ScrollTrigger.refresh();
-      }
-      scrollToSectionById(deepId);
-      clearDeepLinkFromUrl(deepId);
-    });
-  }
-
-  initHero();
-  
-  // Nonaktifkan blob parallax di mobile untuk performa
-  if (!reducedMotion && ScrollTrigger.isTouch !== 1) {
-    initBlobParallax();
-  }
-  
-  initSectionReveals();
-  initScrollTop();
-  initContactForm();
-  initVisibilityTitle();
-
-  await loadSkills();
-  await loadProjectsPreview();
-
-  // Hanya jalankan efek hover jika bukan mobile
-  if (!reducedMotion && ScrollTrigger.isTouch !== 1) {
-    initMagneticHover(".btn", 10);
-    initMagneticHover(".social-btn", 8);
-    initMagneticHover(".skill", 8);
-    initMagneticHover(".project-card", 10);
-    initTilt(".hero-card", 5);
-    initTilt(".project-card", 4);
-    initTilt(".skill", 3);
-  }
-
-  // Refresh ScrollTrigger
-  if (!reducedMotion) {
-    setTimeout(() => {
-      ScrollTrigger.refresh();
-      // Force reflow untuk mencegah visual glitch
-      document.body.style.display = 'none';
-      document.body.offsetHeight; // trigger reflow
-      document.body.style.display = '';
-    }, 300);
-  }
-  
-  // Cleanup saat unload
-  window.addEventListener('beforeunload', () => {
-    if (cleanupSmoothScroll) {
-      cleanupSmoothScroll();
-    }
-    ScrollTrigger.killAll();
+    ScrollTrigger.update();
   });
-});
+
+  ScrollTrigger.refresh();
+}
 
 // =============================
 // NAV + MOBILE DRAWER (GSAP)
@@ -303,46 +193,29 @@ function initSmoothScroll() {
   });
 }
 
+// =============================
+// ACTIVE NAV LINK (ScrollTrigger)
+// =============================
 function initScrollSpy() {
   const navLinks = $$(".nav-link");
   if (!navLinks.length) return;
 
   const sections = $$("section[id]");
-  
-  function setActive(id) {
-    navLinks.forEach(a => a.classList.remove("is-active"));
-    const link = $(`.nav-link[href="#${id}"]`);
-    if (link) link.classList.add("is-active");
-  }
-
-  sections.forEach((sec, i) => {
-    // Tentukan trigger point. 
-    // "top center" berarti trigger aktif saat bagian atas section menyentuh tengah layar.
+  sections.forEach(sec => {
     ScrollTrigger.create({
       trigger: sec,
-      start: "top center", 
-      end: "bottom center",
+      start: "top 55%",
+      end: "bottom 55%",
       onEnter: () => setActive(sec.id),
       onEnterBack: () => setActive(sec.id)
     });
   });
 
-  // --- FIX KHUSUS: FORCE CONTACT ACTIVE SAAT MENTOK BAWAH ---
-  // Ini menangani kasus jika section Contact pendek atau tertutup Experience
-  ScrollTrigger.create({
-    trigger: document.body,
-    start: "top top",
-    end: "bottom bottom",
-    onUpdate: (self) => {
-      // Jika scroll sudah mencapai > 99% (mentok bawah)
-      // window.innerHeight + window.scrollY >= document.body.offsetHeight - 20 (toleransi 20px)
-      const isAtBottom = (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 20;
-      
-      if (isAtBottom) {
-        setActive("contact");
-      }
-    }
-  });
+  function setActive(id) {
+    navLinks.forEach(a => a.classList.remove("is-active"));
+    const link = $(`.nav-link[href="#${id}"]`);
+    if (link) link.classList.add("is-active");
+  }
 }
 
 // =============================
@@ -385,7 +258,7 @@ function initMagneticHover(selector, strength = 18) {
 }
 
 function initTilt(selector, maxRotate = 6) {
-  if (reducedMotion || ScrollTrigger.isTouch === 1) return;
+  if (reducedMotion) return;
   const els = $$(selector);
   els.forEach(el => {
     gsap.set(el, { transformPerspective: 800, transformOrigin: "center" });
