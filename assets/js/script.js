@@ -285,7 +285,7 @@ function initTilt(selector, maxRotate = 6) {
 }
 
 // =============================
-// HERO INTRO + ROLE LOOP (Enhanced)
+// HERO INTRO + ROLE LOOP (FIXED)
 // =============================
 function initHero() {
   if (reducedMotion) return;
@@ -316,31 +316,31 @@ function initHero() {
     gsap.fromTo(heroImg, { scale: 1.08 }, { scale: 1, duration: 1.2, ease: "power3.out", delay: 0.15 });
   }
 
-  // subtle float
+  // --- BAGIAN YANG DIPERBAIKI (FIXED) ---
+  
+  // 1. Animasi Float (Ngambang) - TETAP ADA
   if (heroCard) {
-    gsap.to(heroCard, { y: -10, duration: 2.6, yoyo: true, repeat: -1, ease: "sine.inOut" });
-  }
-
-  // scroll parallax hero card
-  if (heroCard) {
-    gsap.to(heroCard, {
-      y: 24,
-      scrollTrigger: {
-        trigger: ".hero",
-        start: "top top",
-        end: "bottom top",
-        scrub: 0.6
-      }
+    gsap.to(heroCard, { 
+      y: -15, // Jarak ngambang sedikit ditambah biar makin kerasa
+      duration: 2.6, 
+      yoyo: true, 
+      repeat: -1, 
+      ease: "sine.inOut" 
     });
   }
+
+  // 2. Animasi Scroll Parallax - DIHAPUS
+  // (Saya menghapus bagian scrollTrigger pada heroCard yang menyebabkan bentrok/freeze)
+
+  // --------------------------------------
 
   // Roles loop (type + hold + fade)
   if (roleText) {
     const roles = [
-      "Fullstack Development",
-      "Frontend Development",
-      "Backend Development",
-      "Mobile Development"
+      "Fullstack Developer",
+      "Frontend Developer",
+      "Backend Developer",
+      "Mobile Developer"
     ];
 
     const roleTl = gsap.timeline({ repeat: -1, delay: 0.2 });

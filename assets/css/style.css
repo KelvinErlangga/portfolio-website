@@ -476,16 +476,6 @@ img{ max-width: 100%; display: block; }
   margin: 0 0 6px 0;
   font-size: 22px;
 }
-.pill{
-  display: inline-flex;
-  padding: 7px 10px;
-  border-radius: 999px;
-  background: rgba(124,92,255,0.12);
-  border: 1px solid rgba(124,92,255,0.22);
-  color: rgba(255,255,255,0.86);
-  font-size: 12px;
-  margin: 0 0 12px 0;
-}
 .text{
   margin: 0;
   color: rgba(255,255,255,0.82);
@@ -711,18 +701,90 @@ img{ max-width: 100%; display: block; }
 
 /* Responsive */
 @media (max-width: 980px){
-  .hero-grid{ grid-template-columns: 1fr; }
+  .hero-grid{ 
+    grid-template-columns: 1fr; 
+    /* Menambahkan gap agar foto tidak terlalu mepet dengan tombol di atasnya */
+    gap: 40px; 
+  }
+
+  /* --- TAMBAHAN KODE DI SINI --- */
+  .hero {
+    /* Memberikan jarak tambahan dari navbar khusus tampilan mobile/tablet */
+    padding-top: 50px; 
+  }
+  /* ----------------------------- */
+
   .about-grid{ grid-template-columns: 1fr; }
   .contact-grid{ grid-template-columns: 1fr; }
   .projects-grid{ grid-template-columns: repeat(2, 1fr); }
   .skills-grid{ grid-template-columns: repeat(3, 1fr); }
   .edu-grid{ grid-template-columns: 1fr; }
-    .about-photo img{ max-height: 360px; }
-
+  .about-photo img{ max-height: 360px; }
 }
+
 @media (max-width: 720px){
+  /* Jika di layar HP kecil masih kurang turun, tambahkan ini juga */
+  .hero {
+    padding-top: 50px; 
+  }
+  
   .nav{ display:none; }
   .menu-btn{ display:inline-flex; align-items:center; justify-content:center; }
   .skills-grid{ grid-template-columns: repeat(2, 1fr); }
   .projects-grid{ grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+  
+  /* 1. Reset Grid menjadi 1 kolom (atas-bawah) */
+  .about-grid {
+    grid-template-columns: 1fr !important; /* Paksa 1 kolom */
+    gap: 30px;
+    text-align: justify; /* Agar Nama & Deskripsi rata tengah (lebih estetik di mobile) */
+  }
+
+  /* 2. Rapikan Foto */
+  .about-photo {
+    width: 100%;
+    max-width: 320px; /* Batasi lebar agar tidak terlalu raksasa */
+    margin: 0 auto;   /* Posisikan tepat di tengah */
+  }
+  
+  .about-photo img {
+    max-height: 300px; /* Sesuaikan tinggi agar proporsional */
+  }
+
+  /* 3. Rapikan Konten Teks */
+  .about-content {
+    padding: 0 10px; /* Beri sedikit napas di kiri-kanan */
+  }
+
+  /* 4. PERBAIKAN UTAMA: Info Grid (Email & Location) 
+     Ubah jadi 1 kolom agar email panjang muat & rapi */
+  .info-grid {
+    grid-template-columns: 1fr !important; 
+    gap: 12px;
+    margin-top: 24px;
+    text-align: left; /* Isi kotak tetap rata kiri agar mudah dibaca */
+  }
+
+  /* Opsional: Memastikan teks di dalam kotak info tidak keluar jalur */
+  .info-value {
+    font-size: 14px; /* Sedikit kecilkan font jika perlu */
+    word-break: break-all; /* Jaga-jaga kalau email sangat panjang */
+  }
+
+  /* 5. Tombol Aksi (Contact & Projects) */
+  .about-actions {
+    justify-content: center; /* Tengahkan tombol */
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  /* Agar tombol lebih mudah dipencet di HP (full width atau lebar proporsional) */
+  .about-actions .btn {
+    flex: 1; /* Membuat kedua tombol sama lebar */
+    justify-content: center;
+    min-width: 120px;
+  }
 }
