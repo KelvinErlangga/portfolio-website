@@ -55,7 +55,7 @@ function safeJSONFetch(url) {
 // SMOOTH SCROLLER (FREE ScrollSmoother-like)
 // =============================
 function initSmoothScroller() {
-  if (reducedMotion) return;
+  if (reducedMotion || ScrollTrigger.isTouch === 1) return;
 
   const wrapper = document.querySelector("#smooth-wrapper");
   const content = document.querySelector("#smooth-content");
@@ -193,29 +193,46 @@ function initSmoothScroll() {
   });
 }
 
-// =============================
-// ACTIVE NAV LINK (ScrollTrigger)
-// =============================
 function initScrollSpy() {
   const navLinks = $$(".nav-link");
   if (!navLinks.length) return;
 
   const sections = $$("section[id]");
-  sections.forEach(sec => {
-    ScrollTrigger.create({
-      trigger: sec,
-      start: "top 55%",
-      end: "bottom 55%",
-      onEnter: () => setActive(sec.id),
-      onEnterBack: () => setActive(sec.id)
-    });
-  });
-
+  
   function setActive(id) {
     navLinks.forEach(a => a.classList.remove("is-active"));
     const link = $(`.nav-link[href="#${id}"]`);
     if (link) link.classList.add("is-active");
   }
+
+  sections.forEach((sec, i) => {
+    // Tentukan trigger point. 
+    // "top center" berarti trigger aktif saat bagian atas section menyentuh tengah layar.
+    ScrollTrigger.create({
+      trigger: sec,
+      start: "top center", 
+      end: "bottom center",
+      onEnter: () => setActive(sec.id),
+      onEnterBack: () => setActive(sec.id)
+    });
+  });
+
+  // --- FIX KHUSUS: FORCE CONTACT ACTIVE SAAT MENTOK BAWAH ---
+  // Ini menangani kasus jika section Contact pendek atau tertutup Experience
+  ScrollTrigger.create({
+    trigger: document.body,
+    start: "top top",
+    end: "bottom bottom",
+    onUpdate: (self) => {
+      // Jika scroll sudah mencapai > 99% (mentok bawah)
+      // window.innerHeight + window.scrollY >= document.body.offsetHeight - 20 (toleransi 20px)
+      const isAtBottom = (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 20;
+      
+      if (isAtBottom) {
+        setActive("contact");
+      }
+    }
+  });
 }
 
 // =============================
@@ -258,7 +275,7 @@ function initMagneticHover(selector, strength = 18) {
 }
 
 function initTilt(selector, maxRotate = 6) {
-  if (reducedMotion) return;
+  if (reducedMotion || ScrollTrigger.isTouch === 1) return;
   const els = $$(selector);
   els.forEach(el => {
     gsap.set(el, { transformPerspective: 800, transformOrigin: "center" });
