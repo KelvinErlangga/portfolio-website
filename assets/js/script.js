@@ -685,6 +685,77 @@ window.addEventListener("load", async () => {
   initTilt(".project-card", 4);
   initTilt(".skill", 3);
 
+  // =============================
+  // LEBAY EFFECT: INTERACTIVE CURSOR
+  // =============================
+  if (!reducedMotion && window.matchMedia("(hover: hover)").matches) {
+    
+    const dot = $(".cursor-dot");
+    const outline = $(".cursor-outline");
+
+    // Menggunakan gsap.quickTo untuk performa tinggi (biar gak nge-lag)
+    const xTo = gsap.quickTo(outline, "x", { duration: 0.2, ease: "power3" });
+    const yTo = gsap.quickTo(outline, "y", { duration: 0.2, ease: "power3" });
+
+    window.addEventListener("mousemove", (e) => {
+      // Dot bergerak instan
+      gsap.to(dot, { x: e.clientX, y: e.clientY, duration: 0 });
+      
+      // Outline bergerak dengan delay halus
+      xTo(e.clientX);
+      yTo(e.clientY);
+    });
+
+    // Efek saat Hover Link / Tombol
+    // Kita cari semua elemen yang bisa diklik
+    const interactives = $$("a, button, .card, input, textarea, .skill");
+
+    interactives.forEach((el) => {
+      el.addEventListener("mouseenter", () => {
+        gsap.to(outline, {
+          width: 80,             // Membesar
+          height: 80,
+          borderColor: "transparent",
+          backgroundColor: "rgba(255, 255, 255, 0.1)", // Jadi agak putih transparan
+          duration: 0.3
+        });
+      });
+
+      el.addEventListener("mouseleave", () => {
+        gsap.to(outline, {
+          width: 40,             // Balik ukuran normal
+          height: 40,
+          borderColor: "rgba(255, 255, 255, 0.5)",
+          backgroundColor: "transparent",
+          duration: 0.3
+        });
+      });
+    });
+  }
+
+  document.addEventListener("click", (e) => {
+    // Bikin elemen ripple
+    const ripple = document.createElement("div");
+    ripple.className = "click-ripple";
+    document.body.appendChild(ripple);
+
+    // Posisi ripple di ujung kursor
+    const size = 100; // Ukuran awal
+    ripple.style.width = `${size}px`;
+    ripple.style.height = `${size}px`;
+    ripple.style.left = `${e.clientX - size/2}px`;
+    ripple.style.top = `${e.clientY - size/2 + window.scrollY}px`;
+
+    // Animasi meledak
+    gsap.to(ripple, {
+      scale: 4,
+      opacity: 0,
+      duration: 0.6,
+      ease: "power2.out",
+      onComplete: () => ripple.remove() // Hapus elemen setelah selesai
+    });
+  });
+
   // refresh once assets loaded
   if (!reducedMotion) {
     setTimeout(() => ScrollTrigger.refresh(), 250);

@@ -31,6 +31,36 @@ body{
   font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   overflow-x: hidden;
   padding-top: 0 !important;
+  cursor: none;
+}
+
+/* Titik Putih Kecil */
+.cursor-dot {
+  width: 8px;
+  height: 8px;
+  background-color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  z-index: 9999;
+  pointer-events: none; /* Biar tetap bisa ngeklik elemen di bawahnya */
+}
+
+/* Lingkaran Luar (Ring) */
+.cursor-outline {
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.5); /* Transparan */
+  position: fixed;
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  z-index: 9998;
+  pointer-events: none;
+  transition: width 0.2s, height 0.2s, background-color 0.2s; /* Animasi saat membesar */
 }
 
 #smooth-wrapper{
@@ -699,8 +729,25 @@ img{ max-width: 100%; display: block; }
   pointer-events: none;
 }
 
+/* Efek Klik Lebay */
+.click-ripple {
+  position: absolute;
+  border-radius: 50%;
+  transform: scale(0);
+  background: rgba(255, 255, 255, 0.4);
+  pointer-events: none;
+  z-index: 9999;
+}
+
 /* Responsive */
 @media (max-width: 980px){
+  .cursor-dot, .cursor-outline {
+    display: none;
+  }
+  body {
+    cursor: auto; /* Balikin kursor normal kalau ada mouse connect ke HP */
+  }
+  
   .hero-grid{ 
     grid-template-columns: 1fr; 
     /* Menambahkan gap agar foto tidak terlalu mepet dengan tombol di atasnya */
