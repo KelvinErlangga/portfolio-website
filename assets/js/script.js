@@ -383,42 +383,79 @@ function initBlobParallax() {
 }
 
 // =============================
-// SECTION REVEALS (Batch, cleaner)
+// SECTION REVEALS (FIXED FOR MOBILE BLINK)
 // =============================
 function initSectionReveals() {
   if (reducedMotion) return;
 
-  // Titles + desc (clean)
+  // --- PERBAIKAN: Set Initial State Dulu ---
+  // Kita sembunyikan elemen 'sebelum' ScrollTrigger aktif.
+  // Menambahkan 'will-change' memberi tahu browser HP untuk bersiap (mencegah lag).
+  const revealElements = ".section-head, .card:not(.hero-card)"; 
+  
+  gsap.set(revealElements, { 
+    y: 30, 
+    autoAlpha: 0,
+    willChange: "transform, opacity" 
+  });
+
+  // --- 1. Titles + desc ---
   ScrollTrigger.batch(".section-head", {
     start: "top 85%",
-    onEnter: (batch) => gsap.fromTo(batch,
-      { y: 22, autoAlpha: 0 },
-      { y: 0, autoAlpha: 1, duration: 0.8, ease: "power3.out", stagger: 0.12 }
-    ),
+    // Gunakan .to (bukan fromTo) agar tidak reset ke 0 saat refresh
+    onEnter: (batch) => gsap.to(batch, {
+      y: 0, 
+      autoAlpha: 1, 
+      duration: 0.8, 
+      ease: "power3.out", 
+      stagger: 0.12,
+      overwrite: true // Mencegah konflik animasi jika discroll cepat bolak-balik
+    }),
     once: true
   });
 
-  // Cards batch
+  // --- 2. Cards batch ---
   ScrollTrigger.batch(".card", {
-    start: "top 88%",
-    onEnter: (batch) => gsap.fromTo(batch,
-      { y: 28, autoAlpha: 0, rotateX: 6, transformOrigin: "center top" },
-      { y: 0, autoAlpha: 1, rotateX: 0, duration: 0.9, ease: "power3.out", stagger: 0.10 }
-    ),
+    start: "top 85%", // Sedikit dinaikkan biar lebih responsif di mobile
+    onEnter: (batch) => gsap.to(batch, {
+      y: 0, 
+      autoAlpha: 1, 
+      rotateX: 0, 
+      duration: 0.9, 
+      ease: "power3.out", 
+      stagger: 0.10,
+      overwrite: true
+    }),
     once: true
   });
 
-  // About photo + content (special)
+  // --- 3. About photo + content (special handling) ---
   const aboutPhoto = $(".about-photo");
   const aboutContent = $(".about-content");
+  
   if (aboutPhoto && aboutContent) {
-    gsap.fromTo([aboutPhoto, aboutContent],
-      { y: 28, autoAlpha: 0 },
-      {
-        y: 0, autoAlpha: 1, duration: 0.9, stagger: 0.12, ease: "power3.out",
-        scrollTrigger: { trigger: ".about-grid", start: "top 80%" }
-      }
-    );
+    // Set initial state khusus untuk about
+    gsap.set([aboutPhoto, aboutContent], { 
+      y: 30, 
+      autoAlpha: 0,
+      willChange: "transform, opacity"
+    });
+
+    ScrollTrigger.create({
+      trigger: ".about-grid",
+      start: "top 80%", // Trigger lebih awal sedikit
+      onEnter: () => {
+        gsap.to([aboutPhoto, aboutContent], {
+          y: 0, 
+          autoAlpha: 1, 
+          duration: 0.9, 
+          stagger: 0.12, 
+          ease: "power3.out",
+          overwrite: true
+        });
+      },
+      once: true
+    });
   }
 }
 
