@@ -341,67 +341,34 @@ function initSectionReveals() {
   if (reducedMotion) return;
 
   const isMobile = window.matchMedia("(max-width: 768px)").matches;
-  const revealElements = ".section-head, .card:not(.hero-card):not(.timeline-item)";
   
-  gsap.set(revealElements, { 
+  // Pastikan kita tidak memilih timeline-item atau hero-card
+  const targets = $$(".section-head, .card:not(.hero-card):not(.timeline-item), .about-photo, .about-content");
+
+  // SET INITIAL STATE SECARA PAKSA (Mencegah "ngedip")
+  gsap.set(targets, { 
     y: 30, 
-    autoAlpha: 0,
-    willChange: "transform, opacity" 
+    autoAlpha: 0 
   });
 
-  ScrollTrigger.batch(".section-head", {
-    start: isMobile ? "top 95%" : "top 85%", 
-    onEnter: (batch) => gsap.to(batch, {
-      y: 0, 
-      autoAlpha: 1, 
-      duration: 0.8, 
-      ease: "power3.out", 
-      stagger: 0.12,
-      overwrite: true 
-    }),
-    once: true
-  });
-
-  ScrollTrigger.batch(".card:not(.hero-card):not(.timeline-item)", {
+  // Batch animasi dengan fromTo untuk konsistensi
+  ScrollTrigger.batch(targets, {
     start: isMobile ? "top 95%" : "top 85%",
-    onEnter: (batch) => gsap.to(batch, {
-      y: 0, 
-      autoAlpha: 1, 
-      rotateX: 0, 
-      duration: 0.9, 
-      ease: "power3.out", 
-      stagger: 0.10,
-      overwrite: true
-    }),
-    once: true
-  });
-
-  const aboutPhoto = $(".about-photo");
-  const aboutContent = $(".about-content");
-  
-  if (aboutPhoto && aboutContent) {
-    gsap.set([aboutPhoto, aboutContent], { 
-      y: 30, 
-      autoAlpha: 0,
-      willChange: "transform, opacity"
-    });
-
-    ScrollTrigger.create({
-      trigger: ".about-grid",
-      start: isMobile ? "top 90%" : "top 80%",
-      onEnter: () => {
-        gsap.to([aboutPhoto, aboutContent], {
+    onEnter: (batch) => {
+      gsap.fromTo(batch, 
+        { y: 30, autoAlpha: 0 }, 
+        { 
           y: 0, 
           autoAlpha: 1, 
-          duration: 0.9, 
-          stagger: 0.12, 
-          ease: "power3.out",
-          overwrite: true
-        });
-      },
-      once: true
-    });
-  }
+          duration: 0.8, 
+          ease: "power3.out", 
+          stagger: 0.1, 
+          overwrite: true 
+        }
+      );
+    },
+    once: true
+  });
 }
 
 function initExperienceAwwwards() {
@@ -410,56 +377,48 @@ function initExperienceAwwwards() {
 
   const isMobile = window.matchMedia("(max-width: 768px)").matches;
 
-  items.forEach(item => {
+  items.forEach((item, index) => {
+    const xStart = isMobile ? 0 : (index % 2 === 0 ? -50 : 50); 
+    const yStart = isMobile ? 50 : 0;
+
     gsap.set(item, {
-      x: 0,
-      y: 30,
       autoAlpha: 0,
-      clipPath: "inset(0 0 0% 0)"
+      x: xStart,
+      y: yStart
     });
-  });
 
-  ScrollTrigger.batch(items, {
-    start: isMobile ? "top 90%" : "top 85%",
-    onEnter: (batch) => {
-      gsap.to(batch, {
-        x: 0,
-        y: 0,
-        autoAlpha: 1,
-        duration: isMobile ? 0.6 : 1.1,
-        ease: "power3.out",
-        stagger: isMobile ? 0.08 : 0.18,
-        overwrite: true
-      });
-    },
-    once: true
-  });
+    gsap.to(item, {
+      scrollTrigger: {
+        trigger: item,
+        start: "top 85%", 
+        toggleActions: "play none none reverse" 
+      },
+      duration: 1.2,
+      x: 0,
+      y: 0,
+      autoAlpha: 1,
+      ease: "power3.out",
+      overwrite: "auto"
+    });
 
-  if (
-    !isMobile &&
-    !reducedMotion &&
-    window.matchMedia("(hover: hover) and (pointer: fine)").matches
-  ) {
-    items.forEach(item => {
-      const isLeft = item.matches(":nth-child(odd)");
-
+    if (!isMobile && !reducedMotion) {
       item.addEventListener("mouseenter", () => {
-        gsap.to(item, {
-          x: isLeft ? -14 : 14,
-          duration: 0.35,
-          ease: "power3.out"
+        gsap.to(item, { 
+          x: index % 2 === 0 ? -10 : 10, 
+          duration: 0.3, 
+          ease: "power2.out" 
         });
       });
 
       item.addEventListener("mouseleave", () => {
-        gsap.to(item, {
-          x: 0,
-          duration: 0.45,
-          ease: "power3.out"
+        gsap.to(item, { 
+          x: 0, 
+          duration: 0.3, 
+          ease: "power2.out" 
         });
       });
-    });
-  }
+    }
+  });
 }
 
 async function loadSkills() {
@@ -476,11 +435,16 @@ async function loadSkills() {
     `).join("");
 
     if (!reducedMotion) {
-      ScrollTrigger.batch('[data-anim="skill"]', {
+      const skills = $$('[data-anim="skill"]', container);
+      
+      // LANGSUNG SEMBUNYIKAN
+      gsap.set(skills, { y: 20, autoAlpha: 0 });
+
+      ScrollTrigger.batch(skills, {
         start: "top 90%",
         onEnter: (batch) => gsap.fromTo(batch,
-          { y: 22, autoAlpha: 0 },
-          { y: 0, autoAlpha: 1, duration: 0.75, ease: "power3.out", stagger: 0.06 }
+          { y: 20, autoAlpha: 0 },
+          { y: 0, autoAlpha: 1, duration: 0.6, ease: "power3.out", stagger: 0.05 }
         ),
         once: true
       });
@@ -518,11 +482,16 @@ async function loadProjectsPreview() {
     `).join("");
 
     if (!reducedMotion) {
-      ScrollTrigger.batch('[data-anim="project"]', {
+      const projects = $$('[data-anim="project"]', container);
+      
+      // LANGSUNG SEMBUNYIKAN
+      gsap.set(projects, { y: 30, autoAlpha: 0, scale: 0.98 });
+
+      ScrollTrigger.batch(projects, {
         start: "top 88%",
         onEnter: (batch) => gsap.fromTo(batch,
-          { y: 34, autoAlpha: 0, scale: 0.98 },
-          { y: 0, autoAlpha: 1, scale: 1, duration: 0.9, ease: "power3.out", stagger: 0.12 }
+          { y: 30, autoAlpha: 0, scale: 0.98 },
+          { y: 0, autoAlpha: 1, scale: 1, duration: 0.9, ease: "power3.out", stagger: 0.1 }
         ),
         once: true
       });
@@ -651,7 +620,10 @@ window.addEventListener("load", async () => {
 
   initHero();
   initBlobParallax();
+  
+  // Initialize standard sections
   initSectionReveals();
+  
   initScrollTop();
   initExperienceAwwwards();
   initContactForm();
