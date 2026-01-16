@@ -991,15 +991,6 @@ img{ max-width: 100%; display: block; }
     transform: none;
   }
 
-  .timeline-item,
-  .timeline-item:hover {
-    transform: none !important;
-  }
-
-  .timeline-item * {
-    transform: none !important;
-  }
-
   .timeline-item {
     width: 100%;
     margin: 0;
