@@ -1,11 +1,7 @@
-// =============================
-// GSAP Portfolio (Premium Motion)
-// =============================
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, TextPlugin);
 
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-// Helpers
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
@@ -14,13 +10,11 @@ function getDeepTargetId() {
   const to = params.get("to");
   if (to) return to;
 
-  // fallback kalau ada hash
   const hash = (window.location.hash || "").replace("#", "");
   return hash || null;
 }
 
 function clearDeepLinkFromUrl(id) {
-  // bikin URL bersih tapi tetap kasih hash biar enak dibaca
   const clean = window.location.pathname + (id ? `#${id}` : "");
   history.replaceState({}, "", clean);
 }
@@ -51,9 +45,6 @@ function safeJSONFetch(url) {
   });
 }
 
-// =============================
-// SMOOTH SCROLLER (FREE ScrollSmoother-like)
-// =============================
 function initSmoothScroller() {
   if (reducedMotion) return;
 
@@ -68,7 +59,6 @@ function initSmoothScroller() {
   const dpr = window.devicePixelRatio || 1;
 
   function setBodyHeight() {
-    // scrollHeight lebih stabil daripada getBoundingClientRect() untuk kasus ini
     const h = content.scrollHeight;
     document.body.style.height = `${h}px`;
   }
@@ -78,7 +68,6 @@ function initSmoothScroller() {
     ScrollTrigger.refresh();
   }
 
-  // proxy untuk ScrollTrigger (karena content digeser via transform)
   ScrollTrigger.scrollerProxy(document.body, {
     scrollTop(value) {
       if (arguments.length) window.scrollTo(0, value);
@@ -101,10 +90,8 @@ function initSmoothScroller() {
     target = window.scrollY || 0;
     current += (target - current) * ease;
 
-    // SNAP ke pixel device (INI kunci ngilangin hairline)
     const snapped = Math.round(current * dpr) / dpr;
 
-    // pakai translate3d biar rendering lebih stabil
     content.style.transform = `translate3d(0, ${-snapped}px, 0)`;
 
     ScrollTrigger.update();
@@ -113,9 +100,6 @@ function initSmoothScroller() {
   ScrollTrigger.refresh();
 }
 
-// =============================
-// NAV + MOBILE DRAWER (GSAP)
-// =============================
 let drawerTl;
 let isDrawerOpen = false;
 
@@ -167,9 +151,6 @@ function initMobileDrawer() {
   });
 }
 
-// =============================
-// SMOOTH ANCHOR SCROLL (GSAP ScrollTo)
-// =============================
 function headerOffset() {
   const header = $(".site-header");
   return header ? header.offsetHeight + 10 : 80;
@@ -193,9 +174,6 @@ function initSmoothScroll() {
   });
 }
 
-// =============================
-// ACTIVE NAV LINK (ScrollTrigger)
-// =============================
 function initScrollSpy() {
   const navLinks = $$(".nav-link");
   if (!navLinks.length) return;
@@ -218,9 +196,6 @@ function initScrollSpy() {
   }
 }
 
-// =============================
-// NAVBAR “SCROLLED” STATE
-// =============================
 function initNavbarScrollState() {
   const header = $(".site-header");
   if (!header || reducedMotion) return;
@@ -233,9 +208,6 @@ function initNavbarScrollState() {
   });
 }
 
-// =============================
-// PREMIUM HOVERS (Magnetic + Tilt)
-// =============================
 function initMagneticHover(selector, strength = 18) {
   if (reducedMotion) return;
   const els = $$(selector);
@@ -284,9 +256,6 @@ function initTilt(selector, maxRotate = 6) {
   });
 }
 
-// =============================
-// HERO INTRO + ROLE LOOP (FIXED)
-// =============================
 function initHero() {
   if (reducedMotion) return;
 
@@ -302,7 +271,6 @@ function initHero() {
 
   const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-  // “cinematic” intro
   tl.fromTo(kicker, { y: 18, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.55 })
     .fromTo(title, { y: 28, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.75 }, "-=0.22")
     .fromTo(sub, { y: 22, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.65 }, "-=0.30")
@@ -311,17 +279,13 @@ function initHero() {
     .fromTo(heroCard, { y: 26, autoAlpha: 0, scale: 0.98 }, { y: 0, autoAlpha: 1, scale: 1, duration: 0.8 }, "-=0.55")
     .fromTo(badge, { y: 12, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.55 }, "-=0.55");
 
-  // image “breath”
   if (heroImg) {
     gsap.fromTo(heroImg, { scale: 1.08 }, { scale: 1, duration: 1.2, ease: "power3.out", delay: 0.15 });
   }
 
-  // --- BAGIAN YANG DIPERBAIKI (FIXED) ---
-  
-  // 1. Animasi Float (Ngambang) - TETAP ADA
   if (heroCard) {
     gsap.to(heroCard, { 
-      y: -15, // Jarak ngambang sedikit ditambah biar makin kerasa
+      y: -15, 
       duration: 2.6, 
       yoyo: true, 
       repeat: -1, 
@@ -329,12 +293,6 @@ function initHero() {
     });
   }
 
-  // 2. Animasi Scroll Parallax - DIHAPUS
-  // (Saya menghapus bagian scrollTrigger pada heroCard yang menyebabkan bentrok/freeze)
-
-  // --------------------------------------
-
-  // Roles loop (type + hold + fade)
   if (roleText) {
     const roles = [
       "Fullstack Developer",
@@ -353,9 +311,6 @@ function initHero() {
   }
 }
 
-// =============================
-// PARALLAX BLOBS (Zeit-like)
-// =============================
 function initBlobParallax() {
   if (reducedMotion) return;
 
@@ -382,16 +337,10 @@ function initBlobParallax() {
   });
 }
 
-// =============================
-// SECTION REVEALS (FIXED FOR MOBILE BLINK)
-// =============================
 function initSectionReveals() {
   if (reducedMotion) return;
 
-  // --- PERBAIKAN: Set Initial State Dulu ---
-  // Kita sembunyikan elemen 'sebelum' ScrollTrigger aktif.
-  // Menambahkan 'will-change' memberi tahu browser HP untuk bersiap (mencegah lag).
-  const revealElements = ".section-head, .card:not(.hero-card)"; 
+  const revealElements = ".section-head, .card:not(.hero-card):not(.timeline-item)";
   
   gsap.set(revealElements, { 
     y: 30, 
@@ -399,24 +348,21 @@ function initSectionReveals() {
     willChange: "transform, opacity" 
   });
 
-  // --- 1. Titles + desc ---
   ScrollTrigger.batch(".section-head", {
     start: "top 85%",
-    // Gunakan .to (bukan fromTo) agar tidak reset ke 0 saat refresh
     onEnter: (batch) => gsap.to(batch, {
       y: 0, 
       autoAlpha: 1, 
       duration: 0.8, 
       ease: "power3.out", 
       stagger: 0.12,
-      overwrite: true // Mencegah konflik animasi jika discroll cepat bolak-balik
+      overwrite: true 
     }),
     once: true
   });
 
-  // --- 2. Cards batch ---
   ScrollTrigger.batch(".card", {
-    start: "top 85%", // Sedikit dinaikkan biar lebih responsif di mobile
+    start: "top 85%", 
     onEnter: (batch) => gsap.to(batch, {
       y: 0, 
       autoAlpha: 1, 
@@ -429,12 +375,10 @@ function initSectionReveals() {
     once: true
   });
 
-  // --- 3. About photo + content (special handling) ---
   const aboutPhoto = $(".about-photo");
   const aboutContent = $(".about-content");
   
   if (aboutPhoto && aboutContent) {
-    // Set initial state khusus untuk about
     gsap.set([aboutPhoto, aboutContent], { 
       y: 30, 
       autoAlpha: 0,
@@ -443,7 +387,7 @@ function initSectionReveals() {
 
     ScrollTrigger.create({
       trigger: ".about-grid",
-      start: "top 80%", // Trigger lebih awal sedikit
+      start: "top 80%", 
       onEnter: () => {
         gsap.to([aboutPhoto, aboutContent], {
           y: 0, 
@@ -458,46 +402,49 @@ function initSectionReveals() {
     });
   }
 }
-// =============================
-// EXPERIENCE – AWWWARDS REVEAL
-// =============================
+
 function initExperienceAwwwards() {
   const items = $$(".timeline-item");
   if (!items.length) return;
 
-  // initial state
-  items.forEach((item, i) => {
+  const isMobile = window.matchMedia("(max-width: 768px)").matches;
+
+  items.forEach(item => {
     gsap.set(item, {
-      y: i === 0 ? 0 : 60,
-      autoAlpha: i === 0 ? 1 : 0,
-      clipPath: i === 0 ? "inset(0 0 0% 0)" : "inset(0 0 100% 0)"
+      x: 0,
+      y: 30,
+      autoAlpha: 0,
+      clipPath: "inset(0 0 0% 0)"
     });
   });
 
   ScrollTrigger.batch(items, {
-    start: "top 85%",
+    start: isMobile ? "top 90%" : "top 85%",
     onEnter: (batch) => {
       gsap.to(batch, {
+        x: 0,
         y: 0,
         autoAlpha: 1,
-        clipPath: "inset(0 0 0% 0)",
-        duration: 1.1,
-        ease: "power4.out",
-        stagger: 0.18
+        duration: isMobile ? 0.6 : 1.1,
+        ease: "power3.out",
+        stagger: isMobile ? 0.08 : 0.18,
+        overwrite: true
       });
     },
     once: true
   });
 
-  // micro hover motion (desktop only)
-  // micro hover motion (desktop only)
-  if (!reducedMotion) {
+  if (
+    !isMobile &&
+    !reducedMotion &&
+    window.matchMedia("(hover: hover) and (pointer: fine)").matches
+  ) {
     items.forEach(item => {
       const isLeft = item.matches(":nth-child(odd)");
 
       item.addEventListener("mouseenter", () => {
         gsap.to(item, {
-          x: isLeft ? 14 : -14, // 🔥 KUNCI PERBAIKAN
+          x: isLeft ? -14 : 14,
           duration: 0.35,
           ease: "power3.out"
         });
@@ -514,9 +461,6 @@ function initExperienceAwwwards() {
   }
 }
 
-// =============================
-// SKILLS RENDER + ANIM (Batch)
-// =============================
 async function loadSkills() {
   const container = $("#skillsContainer");
   if (!container) return;
@@ -546,9 +490,6 @@ async function loadSkills() {
   }
 }
 
-// =============================
-// PROJECTS PREVIEW RENDER + ANIM
-// =============================
 async function loadProjectsPreview() {
   const container = $("#projectsPreview");
   if (!container) return;
@@ -591,9 +532,6 @@ async function loadProjectsPreview() {
   }
 }
 
-// =============================
-// SCROLL TOP BUTTON (GSAP)
-// =============================
 function initScrollTop() {
   const btn = $("#scrollTop");
   if (!btn) return;
@@ -621,9 +559,6 @@ function initScrollTop() {
   });
 }
 
-// =============================
-// CONTACT FORM (Input glow + micro anim)
-// =============================
 function initContactForm() {
   const form = $("#contact-form");
   const note = $("#formNote");
@@ -679,9 +614,6 @@ function initContactForm() {
   });
 }
 
-// =============================
-// TITLE + FAVICON SWITCH
-// =============================
 function initVisibilityTitle() {
   document.addEventListener("visibilitychange", () => {
     const fav = $("#favicon");
@@ -695,9 +627,6 @@ function initVisibilityTitle() {
   });
 }
 
-// =============================
-// INIT
-// =============================
 window.addEventListener("load", async () => {
   setYear();
   
@@ -705,14 +634,13 @@ window.addEventListener("load", async () => {
   
   window.scrollTo(0, 0);
   
-  initSmoothScroller();       // <-- premium scroll inertia
+  initSmoothScroller();
   initMobileDrawer();
   initSmoothScroll();
   initScrollSpy();
   initNavbarScrollState();
 
   if (deepId) {
-    // tunggu 1 frame + refresh supaya body height/ScrollTrigger stabil
     requestAnimationFrame(() => {
       if (!reducedMotion) ScrollTrigger.refresh();
       scrollToSectionById(deepId);
@@ -724,14 +652,13 @@ window.addEventListener("load", async () => {
   initBlobParallax();
   initSectionReveals();
   initScrollTop();
-  initExperienceAwwwards(); // <-- TAMBAHKAN
+  initExperienceAwwwards();
   initContactForm();
   initVisibilityTitle();
 
   await loadSkills();
   await loadProjectsPreview();
 
-  // premium hover interactions
   initMagneticHover(".btn", 10);
   initMagneticHover(".social-btn", 8);
   initMagneticHover(".skill", 8);
@@ -741,45 +668,37 @@ window.addEventListener("load", async () => {
   initTilt(".project-card", 4);
   initTilt(".skill", 3);
 
-  // =============================
-  // LEBAY EFFECT: INTERACTIVE CURSOR
-  // =============================
   if (!reducedMotion && window.matchMedia("(hover: hover)").matches) {
     
     const dot = $(".cursor-dot");
     const outline = $(".cursor-outline");
 
-    // Menggunakan gsap.quickTo untuk performa tinggi (biar gak nge-lag)
     const xTo = gsap.quickTo(outline, "x", { duration: 0.2, ease: "power3" });
     const yTo = gsap.quickTo(outline, "y", { duration: 0.2, ease: "power3" });
 
     window.addEventListener("mousemove", (e) => {
-      // Dot bergerak instan
       gsap.to(dot, { x: e.clientX, y: e.clientY, duration: 0 });
       
-      // Outline bergerak dengan delay halus
       xTo(e.clientX);
       yTo(e.clientY);
     });
 
-    // Efek saat Hover Link / Tombol
-    // Kita cari semua elemen yang bisa diklik
     const interactives = $$("a, button, .card, input, textarea, .skill");
 
     interactives.forEach((el) => {
       el.addEventListener("mouseenter", () => {
         gsap.to(outline, {
-          width: 80,             // Membesar
+          width: 80,
           height: 80,
           borderColor: "transparent",
-          backgroundColor: "rgba(255, 255, 255, 0.1)", // Jadi agak putih transparan
+          backgroundColor: "rgba(255, 255, 255, 0.1)",
           duration: 0.3
         });
       });
 
       el.addEventListener("mouseleave", () => {
         gsap.to(outline, {
-          width: 40,             // Balik ukuran normal
+          width: 40,
           height: 40,
           borderColor: "rgba(255, 255, 255, 0.5)",
           backgroundColor: "transparent",
@@ -790,25 +709,22 @@ window.addEventListener("load", async () => {
   }
 
   document.addEventListener("click", (e) => {
-    // Bikin elemen ripple
     const ripple = document.createElement("div");
     ripple.className = "click-ripple";
     document.body.appendChild(ripple);
 
-    // Posisi ripple di ujung kursor
-    const size = 100; // Ukuran awal
+    const size = 100;
     ripple.style.width = `${size}px`;
     ripple.style.height = `${size}px`;
     ripple.style.left = `${e.clientX - size/2}px`;
     ripple.style.top = `${e.clientY - size/2 + window.scrollY}px`;
 
-    // Animasi meledak
     gsap.to(ripple, {
       scale: 4,
       opacity: 0,
       duration: 0.6,
       ease: "power2.out",
-      onComplete: () => ripple.remove() // Hapus elemen setelah selesai
+      onComplete: () => ripple.remove()
     });
   });
 
