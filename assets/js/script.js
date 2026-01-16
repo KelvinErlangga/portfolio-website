@@ -381,25 +381,31 @@ function initExperienceAwwwards() {
   const isMobile = window.matchMedia("(max-width: 768px)").matches;
 
   items.forEach((item, index) => {
+    // Mobile: Muncul dari bawah (y: 30)
+    // Desktop: Muncul dari samping
     const xStart = isMobile ? 0 : (index % 2 === 0 ? -50 : 50); 
-    const yStart = isMobile ? 50 : 0;
+    const yStart = isMobile ? 30 : 0;
 
-    // Set posisi awal (sembunyi)
+    // 1. Set Posisi Awal (Sembunyi)
     gsap.set(item, {
       autoAlpha: 0,
       x: xStart,
       y: yStart
     });
 
-    // Animasi Masuk
+    // 2. Animasi Masuk
     gsap.to(item, {
       scrollTrigger: {
         trigger: item,
-        start: "top 85%", // Mulai saat elemen masuk viewport
-        toggleActions: "play none none none", // <--- PERBAIKAN: Ganti 'reverse' jadi 'none' biar gak ilang lagi
-        once: true // <--- TAMBAHAN: Pastikan animasi cuma jalan sekali seumur hidup
+        start: isMobile ? "top 85%" : "top 80%", // Mobile muncul lebih cepat
+        // play = mainkan saat masuk
+        // none = jangan lakukan apa-apa saat lewat
+        // none = jangan lakukan apa-apa saat scroll balik ke atas
+        // none = jangan reset
+        toggleActions: "play none none none", 
+        once: true // PENTING: Animasi cuma jalan 1x seumur hidup (biar gak ngedip/ilang)
       },
-      duration: 1.2,
+      duration: 1, // Durasi sedikit lebih cepat biar snappy
       x: 0,
       y: 0,
       autoAlpha: 1,
@@ -407,11 +413,11 @@ function initExperienceAwwwards() {
       overwrite: "auto"
     });
 
-    // Hover effect hanya untuk Desktop
+    // Hover effect (Desktop Only)
     if (!isMobile && !reducedMotion) {
       item.addEventListener("mouseenter", () => {
         gsap.to(item, { 
-          x: index % 2 === 0 ? -10 : 10, 
+          x: index % 2 === 0 ? -8 : 8, 
           duration: 0.3, 
           ease: "power2.out" 
         });

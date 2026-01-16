@@ -836,37 +836,24 @@ img{ max-width: 100%; display: block; }
 }
 
 /* =========================================
-   RESPONSIVE & BUG FIXES (MOBILE/TABLET)
+   RESPONSIVE MOBILE / TABLET (FIXED)
    ========================================= */
 
 @media (max-width: 980px) {
   
-  /* 1. KURANGI JARAK ANTAR SECTION (BIAR GAK KOSONG MELOMPONG) */
-  .section {
-    padding: 40px 0 !important; /* Dulu 56px, sekarang 40px */
+  /* --- 1. GLOBAL RESET (Scroll & Cursor) --- */
+  .cursor-dot, .cursor-outline { display: none; }
+  body { 
+    cursor: auto; 
+    height: auto !important;
+    overflow-y: auto !important;
   }
-
-  /* 2. HERO FIX (JARAK ATAS DIPERKECIL DIKIT) */
-  .hero-grid { 
-    grid-template-columns: 1fr; 
-    gap: 30px; /* Jarak antar teks dan foto diperkecil */
-    align-items: start; 
-    min-height: auto; 
-    padding-bottom: 40px; /* Dulu 60px */
-  }
-
-  .hero {
-    /* Header (72px) + Jarak Aman (18px) = 90px */
-    /* Dulu 120px, sekarang 90px biar gak terlalu turun */
-    padding-top: 90px !important; 
-  }
-
-  /* 3. SCROLL FIX (JANGAN DIUBAH BAGIAN INI) */
+  
+  /* Reset Smooth Scroll wrapper biar native scroll jalan */
   #smooth-wrapper {
     position: relative !important;
-    inset: auto !important;
-    overflow: visible !important;
     height: auto !important;
+    overflow: visible !important;
   }
   #smooth-content {
     position: relative !important;
@@ -874,91 +861,121 @@ img{ max-width: 100%; display: block; }
     width: 100% !important;
     padding-top: 0 !important;
   }
-  body {
-    height: auto !important;
-    overflow-y: auto !important;
-    cursor: auto;
+
+  /* --- 2. LAYOUT & PADDING --- */
+  .section {
+    padding: 40px 0 !important; /* Jarak antar section diperkecil */
   }
-  .cursor-dot, .cursor-outline { display: none; }
 
+  .hero {
+    /* Header (72px) + Sedikit Jarak (8px) = 80px */
+    /* Ini pas, tidak terlalu turun, tapi tidak ketutup navbar */
+    padding-top: 80px !important; 
+  }
 
-  /* 4. EXPERIENCE TIMELINE (RAPIKAN) */
+  .hero-grid { 
+    grid-template-columns: 1fr; 
+    gap: 30px; 
+    align-items: start; 
+    min-height: auto; 
+    padding-bottom: 30px;
+  }
+
+  /* Matikan efek blur berat */
+  .site-header { 
+    backdrop-filter: none !important; 
+    background: rgba(7,10,18,0.98) !important; 
+  }
+
+  /* --- 3. EXPERIENCE TIMELINE (ALIGNMENT FIX) --- */
   .timeline { padding-left: 0; }
   
+  /* Garis Vertikal */
   .timeline::before {
     left: 12px !important; 
     transform: none !important;
   }
 
+  /* Wrapper Item */
   .timeline-item {
     width: 100% !important;
-    margin: 0 0 16px 0 !important; /* Jarak antar kartu diperkecil (20px -> 16px) */
-    padding: 0 0 0 42px !important; /* Padding kiri timeline */
+    margin: 0 0 16px 0 !important;
+    padding: 0 0 0 42px !important; /* Ruang untuk garis kiri */
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
   }
 
+/* Kartu Experience (Content) */
   .timeline-item .exp-wrap {
     background: rgba(255,255,255,0.06);
     border: 1px solid var(--stroke);
-    border-radius: 16px;
-    padding: 14px; /* Padding dalam kartu dikurangi dikit */
+    border-radius: 14px;
+    
+    /* 1. PADDING DIBUAT RATA SEMUA SISI */
+    padding: 12px !important; 
+    
+    width: auto; 
+    margin-right: 16px;
     display: flex;
-    align-items: center;
+    align-items: center; /* Vertikal center */
     gap: 12px;
-    width: 100%;
   }
 
-  .timeline-item::before {
-    left: 4px !important;
-    top: 42px !important; /* Sesuaikan dengan tinggi logo baru */
-    z-index: 5;
-  }
-  
-  .timeline-item::after {
-    left: 8px !important;
-    top: 46px !important;
-    z-index: 6;
-  }
-
+  /* Logo */
   .exp-logo {
-    width: 56px; /* Logo diperkecil dikit biar proporsional */
-    height: 56px;
-    padding: 8px;
-    border-radius: 12px;
+    width: 48px;
+    height: 48px;
+    padding: 6px;
+    border-radius: 10px;
+    flex-shrink: 0;
   }
-  
-  .timeline-item .exp-content { text-align: left !important; }
-  
-  .timeline-item h3 {
-    font-size: 14px; /* Font judul diperkecil dikit */
-    line-height: 1.3;
-    margin-bottom: 2px;
-  }
-  
-  .timeline-item .muted { font-size: 12px; }
-  .timeline-item .tagline { font-size: 11px; margin-top: 2px; }
 
+  /* Typography & Reset Margin */
+  .timeline-item .exp-content { 
+    text-align: left !important;
+    /* Pastikan tidak ada margin aneh di container teks */
+    margin: 0 !important; 
+    padding: 0 !important;
+  }
+  
+  .timeline-item h3 { 
+    font-size: 14px; 
+    line-height: 1.2; 
+    
+    /* 2. INI KUNCINYA: HAPUS MARGIN ATAS */
+    margin-top: 0 !important; 
+    margin-bottom: 2px !important; 
+    padding-top: 0 !important;
+  }
+  
+  .timeline-item .muted { 
+    font-size: 11px; 
+    margin: 0 !important; /* Hapus margin p */
+    display: block;
+  }
+  
+  .timeline-item .tagline { 
+    font-size: 10px; 
+    margin-top: 4px !important; /* Jarak dikit cuma buat tanggal */
+    display: block;
+  }
+
+  /* Pastikan transform GSAP tidak diblokir */
   .timeline-item:hover { transform: none !important; }
 
-
-  /* 5. GRID LAINNYA */
+  /* --- 4. GRID LAINNYA --- */
   .about-grid { grid-template-columns: 1fr; gap: 20px; }
   .contact-grid { grid-template-columns: 1fr; }
   .projects-grid { grid-template-columns: repeat(2, 1fr); }
   .skills-grid { grid-template-columns: repeat(3, 1fr); }
   .edu-grid { grid-template-columns: 1fr; }
-  
-  .about-photo img { 
-    max-height: 300px; /* Foto about diperkecil biar gak menuhin layar */
-  }
-
-  .site-header { backdrop-filter: none !important; background: rgba(7,10,18,0.98) !important; }
+  .about-photo img { max-height: 300px; }
 }
 
+/* HP Layar Kecil */
 @media (max-width: 720px) {
-  .hero { padding-top: 90px !important; } /* Pastikan konsisten */
+  .hero { padding-top: 80px !important; }
   .nav { display: none; }
   .menu-btn { display: inline-flex; align-items: center; justify-content: center; }
   .skills-grid { grid-template-columns: repeat(2, 1fr); }
