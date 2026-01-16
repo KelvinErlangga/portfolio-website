@@ -34,7 +34,6 @@ body{
   cursor: none;
 }
 
-/* Custom Cursor */
 .cursor-dot {
   width: 8px;
   height: 8px;
@@ -62,7 +61,6 @@ body{
   transition: width 0.2s, height 0.2s, background-color 0.2s;
 }
 
-/* Smooth Scroll Containers */
 #smooth-wrapper{
   position: fixed;
   inset: 0;
@@ -81,7 +79,6 @@ body{
   padding-top: var(--header-h);
 }
 
-/* Performance Helpers */
 .section-head,
 .section-title,
 .section-desc,
@@ -94,7 +91,6 @@ body{
   transform: translateZ(0);
 }
 
-/* Blobs */
 .bg-blob{
   position: fixed;
   inset: auto;
@@ -128,7 +124,6 @@ img{ max-width: 100%; display: block; }
   padding: 0 18px;
 }
 
-/* Header */
 .site-header{
   position: fixed;
   top: 0;
@@ -221,7 +216,6 @@ img{ max-width: 100%; display: block; }
 .menu-lines::before{ top: -6px; }
 .menu-lines::after{ top: 6px; }
 
-/* Mobile Nav */
 .mobile-nav{
   position: fixed;
   inset: 0;
@@ -310,8 +304,11 @@ img{ max-width: 100%; display: block; }
 .section{
   padding: 70px 0;
 }
+
+/* --- BAGIAN INI YANG DIUBAH AGAR JUDUL DI TENGAH --- */
 .section-head{
   margin-bottom: 22px;
+  text-align: center; /* Membuat judul ke tengah */
 }
 .section-title{
   font-size: clamp(22px, 3vw, 34px);
@@ -319,11 +316,13 @@ img{ max-width: 100%; display: block; }
   letter-spacing: 0.2px;
 }
 .section-desc{
-  margin: 0;
+  margin: 0 auto; /* Biar deskripsi juga rapi di tengah */
   color: var(--muted);
   font-size: 14px;
   line-height: 1.6;
+  max-width: 600px; /* Membatasi lebar agar enak dibaca */
 }
+/* -------------------------------------------------- */
 
 .btn{
   display: inline-flex;
@@ -355,7 +354,6 @@ img{ max-width: 100%; display: block; }
   box-shadow: var(--shadow);
 }
 
-/* Hero */
 .hero{
   padding-top: 0;
   padding-bottom: 0;
@@ -449,12 +447,10 @@ img{ max-width: 100%; display: block; }
   backface-visibility: hidden;
 }
 
-/* GSAP Will Handle Transform */
 .btn, .social-btn, .skill, .project-card, .hero-card{
   will-change: transform;
 }
 
-/* About */
 .about-grid{
   display: grid;
   grid-template-columns: 420px 1fr;
@@ -509,7 +505,6 @@ img{ max-width: 100%; display: block; }
 .info-value{ display:block; font-size: 13px; color: rgba(255,255,255,0.88); word-break: break-word; }
 .about-actions{ margin-top: 14px; display:flex; gap: 12px; flex-wrap: wrap; }
 
-/* Skills */
 .skills-grid{
   display:grid;
   grid-template-columns: repeat(6, 1fr);
@@ -535,7 +530,6 @@ img{ max-width: 100%; display: block; }
   color: rgba(255,255,255,0.9);
 }
 
-/* Education */
 .edu-grid{
   display:grid;
   grid-template-columns: repeat(2, 1fr);
@@ -562,7 +556,6 @@ img{ max-width: 100%; display: block; }
   font-size: 13px;
 }
 
-/* Projects */
 .projects-grid{
   display:grid;
   grid-template-columns: repeat(3, 1fr);
@@ -607,7 +600,6 @@ img{ max-width: 100%; display: block; }
   font-size: 13px;
 }
 
-/* Experience */
 .experience{
   position: relative;
   overflow: hidden;
@@ -644,7 +636,6 @@ img{ max-width: 100%; display: block; }
   background: transparent;
   border: none;
   box-shadow: none;
-  /* Removed Transition to allow GSAP full control */
 }
 
 .timeline-item:nth-child(odd){
@@ -752,7 +743,6 @@ img{ max-width: 100%; display: block; }
   transform: translateX(14px);
 }
 
-/* Contact */
 .contact-grid{
   display:grid;
   grid-template-columns: 0.9fr 1.1fr;
@@ -792,7 +782,6 @@ img{ max-width: 100%; display: block; }
 .textarea{ min-height: 120px; resize: vertical; }
 .form-note{ margin: 8px 0 0 0; font-size: 12px; }
 
-/* Footer */
 .footer{
   border-top: 1px solid var(--stroke);
   padding: 22px 0;
