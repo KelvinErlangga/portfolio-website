@@ -340,6 +340,7 @@ function initBlobParallax() {
 function initSectionReveals() {
   if (reducedMotion) return;
 
+  const isMobile = window.matchMedia("(max-width: 768px)").matches;
   const revealElements = ".section-head, .card:not(.hero-card):not(.timeline-item)";
   
   gsap.set(revealElements, { 
@@ -349,7 +350,7 @@ function initSectionReveals() {
   });
 
   ScrollTrigger.batch(".section-head", {
-    start: "top 85%",
+    start: isMobile ? "top 95%" : "top 85%", 
     onEnter: (batch) => gsap.to(batch, {
       y: 0, 
       autoAlpha: 1, 
@@ -361,8 +362,8 @@ function initSectionReveals() {
     once: true
   });
 
-  ScrollTrigger.batch(".card", {
-    start: "top 85%", 
+  ScrollTrigger.batch(".card:not(.hero-card):not(.timeline-item)", {
+    start: isMobile ? "top 95%" : "top 85%",
     onEnter: (batch) => gsap.to(batch, {
       y: 0, 
       autoAlpha: 1, 
@@ -387,7 +388,7 @@ function initSectionReveals() {
 
     ScrollTrigger.create({
       trigger: ".about-grid",
-      start: "top 80%", 
+      start: isMobile ? "top 90%" : "top 80%",
       onEnter: () => {
         gsap.to([aboutPhoto, aboutContent], {
           y: 0, 
