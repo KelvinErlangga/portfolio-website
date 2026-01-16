@@ -835,40 +835,134 @@ img{ max-width: 100%; display: block; }
   z-index: 9999;
 }
 
-@media (max-width: 980px){
-  .cursor-dot, .cursor-outline {
-    display: none;
+/* =========================================
+   RESPONSIVE & BUG FIXES (MOBILE/TABLET)
+   ========================================= */
+
+@media (max-width: 980px) {
+  
+  /* 1. KURANGI JARAK ANTAR SECTION (BIAR GAK KOSONG MELOMPONG) */
+  .section {
+    padding: 40px 0 !important; /* Dulu 56px, sekarang 40px */
+  }
+
+  /* 2. HERO FIX (JARAK ATAS DIPERKECIL DIKIT) */
+  .hero-grid { 
+    grid-template-columns: 1fr; 
+    gap: 30px; /* Jarak antar teks dan foto diperkecil */
+    align-items: start; 
+    min-height: auto; 
+    padding-bottom: 40px; /* Dulu 60px */
+  }
+
+  .hero {
+    /* Header (72px) + Jarak Aman (18px) = 90px */
+    /* Dulu 120px, sekarang 90px biar gak terlalu turun */
+    padding-top: 90px !important; 
+  }
+
+  /* 3. SCROLL FIX (JANGAN DIUBAH BAGIAN INI) */
+  #smooth-wrapper {
+    position: relative !important;
+    inset: auto !important;
+    overflow: visible !important;
+    height: auto !important;
+  }
+  #smooth-content {
+    position: relative !important;
+    transform: none !important;
+    width: 100% !important;
+    padding-top: 0 !important;
   }
   body {
+    height: auto !important;
+    overflow-y: auto !important;
     cursor: auto;
   }
+  .cursor-dot, .cursor-outline { display: none; }
+
+
+  /* 4. EXPERIENCE TIMELINE (RAPIKAN) */
+  .timeline { padding-left: 0; }
   
-  .hero-grid{ 
-    grid-template-columns: 1fr; 
-    gap: 40px; 
+  .timeline::before {
+    left: 12px !important; 
+    transform: none !important;
   }
 
-  .hero {
-    padding-top: 50px; 
+  .timeline-item {
+    width: 100% !important;
+    margin: 0 0 16px 0 !important; /* Jarak antar kartu diperkecil (20px -> 16px) */
+    padding: 0 0 0 42px !important; /* Padding kiri timeline */
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
   }
 
-  .about-grid{ grid-template-columns: 1fr; }
-  .contact-grid{ grid-template-columns: 1fr; }
-  .projects-grid{ grid-template-columns: repeat(2, 1fr); }
-  .skills-grid{ grid-template-columns: repeat(3, 1fr); }
-  .edu-grid{ grid-template-columns: 1fr; }
-  .about-photo img{ max-height: 360px; }
+  .timeline-item .exp-wrap {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--stroke);
+    border-radius: 16px;
+    padding: 14px; /* Padding dalam kartu dikurangi dikit */
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .timeline-item::before {
+    left: 4px !important;
+    top: 42px !important; /* Sesuaikan dengan tinggi logo baru */
+    z-index: 5;
+  }
+  
+  .timeline-item::after {
+    left: 8px !important;
+    top: 46px !important;
+    z-index: 6;
+  }
+
+  .exp-logo {
+    width: 56px; /* Logo diperkecil dikit biar proporsional */
+    height: 56px;
+    padding: 8px;
+    border-radius: 12px;
+  }
+  
+  .timeline-item .exp-content { text-align: left !important; }
+  
+  .timeline-item h3 {
+    font-size: 14px; /* Font judul diperkecil dikit */
+    line-height: 1.3;
+    margin-bottom: 2px;
+  }
+  
+  .timeline-item .muted { font-size: 12px; }
+  .timeline-item .tagline { font-size: 11px; margin-top: 2px; }
+
+  .timeline-item:hover { transform: none !important; }
+
+
+  /* 5. GRID LAINNYA */
+  .about-grid { grid-template-columns: 1fr; gap: 20px; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .projects-grid { grid-template-columns: repeat(2, 1fr); }
+  .skills-grid { grid-template-columns: repeat(3, 1fr); }
+  .edu-grid { grid-template-columns: 1fr; }
+  
+  .about-photo img { 
+    max-height: 300px; /* Foto about diperkecil biar gak menuhin layar */
+  }
+
+  .site-header { backdrop-filter: none !important; background: rgba(7,10,18,0.98) !important; }
 }
 
-@media (max-width: 720px){
-  .hero {
-    padding-top: 50px; 
-  }
-  
-  .nav{ display:none; }
-  .menu-btn{ display:inline-flex; align-items:center; justify-content:center; }
-  .skills-grid{ grid-template-columns: repeat(2, 1fr); }
-  .projects-grid{ grid-template-columns: 1fr; }
+@media (max-width: 720px) {
+  .hero { padding-top: 90px !important; } /* Pastikan konsisten */
+  .nav { display: none; }
+  .menu-btn { display: inline-flex; align-items: center; justify-content: center; }
+  .skills-grid { grid-template-columns: repeat(2, 1fr); }
+  .projects-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 768px){

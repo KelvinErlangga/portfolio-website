@@ -46,7 +46,9 @@ function safeJSONFetch(url) {
 }
 
 function initSmoothScroller() {
-  if (reducedMotion) return;
+  const isMobile = window.matchMedia("(max-width: 980px)").matches;
+  
+  if (reducedMotion || isMobile) return;
 
   const wrapper = document.querySelector("#smooth-wrapper");
   const content = document.querySelector("#smooth-content");
@@ -312,7 +314,8 @@ function initHero() {
 }
 
 function initBlobParallax() {
-  if (reducedMotion) return;
+  const isMobile = window.matchMedia("(max-width: 768px)").matches;
+  if (reducedMotion || isMobile) return;
 
   gsap.to(".blob-1", {
     x: 90,
@@ -381,17 +384,20 @@ function initExperienceAwwwards() {
     const xStart = isMobile ? 0 : (index % 2 === 0 ? -50 : 50); 
     const yStart = isMobile ? 50 : 0;
 
+    // Set posisi awal (sembunyi)
     gsap.set(item, {
       autoAlpha: 0,
       x: xStart,
       y: yStart
     });
 
+    // Animasi Masuk
     gsap.to(item, {
       scrollTrigger: {
         trigger: item,
-        start: "top 85%", 
-        toggleActions: "play none none reverse" 
+        start: "top 85%", // Mulai saat elemen masuk viewport
+        toggleActions: "play none none none", // <--- PERBAIKAN: Ganti 'reverse' jadi 'none' biar gak ilang lagi
+        once: true // <--- TAMBAHAN: Pastikan animasi cuma jalan sekali seumur hidup
       },
       duration: 1.2,
       x: 0,
@@ -401,6 +407,7 @@ function initExperienceAwwwards() {
       overwrite: "auto"
     });
 
+    // Hover effect hanya untuk Desktop
     if (!isMobile && !reducedMotion) {
       item.addEventListener("mouseenter", () => {
         gsap.to(item, { 
@@ -641,8 +648,7 @@ window.addEventListener("load", async () => {
   initTilt(".project-card", 4);
   initTilt(".skill", 3);
 
-  if (!reducedMotion && window.matchMedia("(hover: hover)").matches) {
-    
+  if (!reducedMotion && window.matchMedia("(hover: hover) and (pointer: fine)").matches) { 
     const dot = $(".cursor-dot");
     const outline = $(".cursor-outline");
 
