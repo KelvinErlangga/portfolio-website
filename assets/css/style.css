@@ -625,19 +625,172 @@ img{ max-width: 100%; display: block; }
   border-radius: 12px;
   font-size: 13px;
 }
+/* =============================
+   EXPERIENCE – CENTER ZIG ZAG
+   + CHECKPOINT + DYNAMIC LOGO
+   ============================= */
 
-/* EXPERIENCE */
+.experience{
+  position: relative;
+  overflow: hidden;
+}
+
+/* timeline wrapper */
 .timeline{
-  display:grid;
-  grid-template-columns: 1fr;
-  gap: 12px;
+  position: relative;
+  display: grid;
+  padding: 0;
 }
+
+/* center line */
+.timeline::before{
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(124,92,255,0.6),
+    rgba(0,212,255,0.6),
+    transparent
+  );
+  opacity: 0.65;
+}
+
+/* timeline item */
 .timeline-item{
-  padding: 16px;
+  position: relative;
+  width: 45%;
+  padding: 22px 26px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  transition: transform 0.35s cubic-bezier(.2,.6,.2,1);
 }
+
+/* zig zag position */
+.timeline-item:nth-child(odd){
+  margin-right: auto;
+}
+
+.timeline-item:nth-child(even){
+  margin-left: auto;
+}
+
+/* =============================
+   CHECKPOINT
+   ============================= */
+
+.timeline-item::before{
+  content: "";
+  position: absolute;
+  top: 34px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--accent);
+  box-shadow:
+    0 0 0 6px rgba(124,92,255,0.15),
+    0 0 16px rgba(124,92,255,0.45);
+  z-index: 2;
+}
+
+.timeline-item::after{
+  content: "";
+  position: absolute;
+  top: 38px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  z-index: 3;
+}
+
+/* checkpoint position */
+.timeline-item:nth-child(odd)::before,
+.timeline-item:nth-child(odd)::after{
+  right: -38px;
+}
+
+.timeline-item:nth-child(even)::before,
+.timeline-item:nth-child(even)::after{
+  left: -38px;
+}
+
+/* =============================
+   CONTENT + LOGO
+   ============================= */
+
+.exp-wrap{
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* DEFAULT → EXPERIENCE DI KANAN
+   LOGO DI KIRI, TEKS DI KANAN */
+.timeline-item:nth-child(even) .exp-wrap{
+  flex-direction: row;
+}
+
+.timeline-item:nth-child(even) .exp-content{
+  text-align: left;
+}
+
+/* EXPERIENCE DI KIRI
+   TEKS DI KIRI, LOGO DI KANAN */
+.timeline-item:nth-child(odd) .exp-wrap{
+  flex-direction: row-reverse;
+}
+
+.timeline-item:nth-child(odd) .exp-content{
+  text-align: right;
+}
+
+/* logo */
+.exp-logo{
+  width: 114px;
+  height: 114px;
+  object-fit: contain;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.08);
+  padding: 12px;
+  flex-shrink: 0;
+}
+
+.exp-content{
+  gap: 4px; /* sebelumnya 6px → lebih rapat */
+}
+
 .timeline-item h3{
-  margin: 0 0 6px 0;
-  font-size: 16px;
+  line-height: 1.25;
+}
+
+.timeline-item .muted{
+  font-size: 13.5px;
+  line-height: 1.4;
+  letter-spacing: 0.18em; /* sebelumnya 0.3em → terlalu jauh */
+}
+
+.timeline-item .tagline{
+  font-size: 12.5px;
+  line-height: 1.4;
+  letter-spacing: 0.22em; /* sebelumnya 0.35em */
+  margin-top: 2px;       /* sebelumnya 6px */
+}
+
+/* hover motion */
+.timeline-item:nth-child(odd):hover{
+  transform: translateX(-14px);
+}
+
+.timeline-item:nth-child(even):hover{
+  transform: translateX(14px);
 }
 
 /* CONTACT */
@@ -781,57 +934,211 @@ img{ max-width: 100%; display: block; }
   .projects-grid{ grid-template-columns: 1fr; }
 }
 
-@media (max-width: 768px) {
-  
-  /* 1. Reset Grid menjadi 1 kolom (atas-bawah) */
-  .about-grid {
-    grid-template-columns: 1fr !important; /* Paksa 1 kolom */
-    gap: 30px;
-    text-align: justify; /* Agar Nama & Deskripsi rata tengah (lebih estetik di mobile) */
+/* ======================================================
+   MOBILE OPTIMIZATION (<= 768px)
+   Experience + Global Cleanup
+   ====================================================== */
+@media (max-width: 768px){
+
+  /* ===== GLOBAL ===== */
+  .cursor-dot, .cursor-outline {
+    display: none;
   }
 
-  /* 2. Rapikan Foto */
-  .about-photo {
-    width: 100%;
-    max-width: 320px; /* Batasi lebar agar tidak terlalu raksasa */
-    margin: 0 auto;   /* Posisikan tepat di tengah */
-  }
-  
-  .about-photo img {
-    max-height: 300px; /* Sesuaikan tinggi agar proporsional */
+  body {
+    cursor: auto;
   }
 
-  /* 3. Rapikan Konten Teks */
-  .about-content {
-    padding: 0 10px; /* Beri sedikit napas di kiri-kanan */
-  }
-
-  /* 4. PERBAIKAN UTAMA: Info Grid (Email & Location) 
-     Ubah jadi 1 kolom agar email panjang muat & rapi */
-  .info-grid {
-    grid-template-columns: 1fr !important; 
-    gap: 12px;
-    margin-top: 24px;
-    text-align: left; /* Isi kotak tetap rata kiri agar mudah dibaca */
-  }
-
-  /* Opsional: Memastikan teks di dalam kotak info tidak keluar jalur */
-  .info-value {
-    font-size: 14px; /* Sedikit kecilkan font jika perlu */
-    word-break: break-all; /* Jaga-jaga kalau email sangat panjang */
-  }
-
-  /* 5. Tombol Aksi (Contact & Projects) */
-  .about-actions {
-    justify-content: center; /* Tengahkan tombol */
-    gap: 12px;
-    margin-top: 24px;
-  }
-
-  /* Agar tombol lebih mudah dipencet di HP (full width atau lebar proporsional) */
-  .about-actions .btn {
-    flex: 1; /* Membuat kedua tombol sama lebar */
+  .nav { display: none; }
+  .menu-btn {
+    display: inline-flex;
+    align-items: center;
     justify-content: center;
+  }
+
+  .section {
+    padding: 56px 0;
+  }
+
+  .section-title {
+    font-size: 22px;
+  }
+
+  .section-desc {
+    font-size: 13px;
+    line-height: 1.45;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    padding-top: 50px;
+  }
+
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .hero-title {
+    font-size: 30px;
+    line-height: 1.1;
+  }
+
+  .hero-sub {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* ===== ABOUT ===== */
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .about-photo {
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  .about-photo img {
+    max-height: 300px;
+  }
+
+  .about-content {
+    padding: 0 10px;
+  }
+
+  .about-name {
+    font-size: 18px;
+  }
+
+  .text {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  .info-value {
+    font-size: 13px;
+  }
+
+  .about-actions {
+    justify-content: center;
+    margin-top: 22px;
+  }
+
+  .about-actions .btn {
+    flex: 1;
     min-width: 120px;
+  }
+
+  /* ===== SKILLS ===== */
+  .skills-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .skill {
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .skill span {
+    font-size: 12px;
+  }
+
+  /* ===== PROJECTS ===== */
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* ======================================================
+     EXPERIENCE (INI YANG PALING PENTING)
+     ====================================================== */
+
+  .timeline::before {
+    left: 18px;
+    transform: none;
+  }
+
+  .timeline-item {
+    width: 100%;
+    margin: 0;
+    padding: 16px 16px 16px 42px;
+  }
+
+  .timeline-item::before,
+  .timeline-item::after {
+    left: 10px !important;
+    right: auto !important;
+  }
+
+  .exp-wrap {
+    gap: 14px;
+    align-items: center;
+  }
+
+  /* LOGO DIPERKECIL */
+  .exp-logo {
+    width: 72px;
+    height: 72px;
+    padding: 8px;
+    border-radius: 12px;
+  }
+
+  .timeline-item .exp-wrap{
+    flex-direction: row !important; /* LOGO KIRI */
+    align-items: center;
+  }
+
+  .timeline-item .exp-content{
+    text-align: left !important;
+  }
+
+  /* TEKS EXPERIENCE */
+  .timeline-item h3 {
+    font-size: 15px;
+    line-height: 1.25;
+    margin-bottom: 2px;
+  }
+
+  .timeline-item .muted {
+    font-size: 11.5px;
+    line-height: 1.35;
+    letter-spacing: 0.08em; /* DIPERKECIL */
+  }
+
+  .timeline-item .tagline {
+    font-size: 11px;
+    line-height: 1.35;
+    letter-spacing: 0.18em; /* JAUH LEBIH RAPAT */
+    margin-top: 2px;
+  }
+
+  .exp-content {
+    gap: 3px; /* RAPAT */
+    text-align: left !important;
+  }
+
+  .timeline-item:hover {
+    transform: none;
+  }
+
+  /* ===== CONTACT ===== */
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-card h3 {
+    font-size: 15px;
+  }
+
+  .contact-line {
+    padding: 10px;
+    font-size: 13px;
   }
 }

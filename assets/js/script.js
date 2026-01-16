@@ -458,6 +458,61 @@ function initSectionReveals() {
     });
   }
 }
+// =============================
+// EXPERIENCE – AWWWARDS REVEAL
+// =============================
+function initExperienceAwwwards() {
+  const items = $$(".timeline-item");
+  if (!items.length) return;
+
+  // initial state
+  items.forEach((item, i) => {
+    gsap.set(item, {
+      y: i === 0 ? 0 : 60,
+      autoAlpha: i === 0 ? 1 : 0,
+      clipPath: i === 0 ? "inset(0 0 0% 0)" : "inset(0 0 100% 0)"
+    });
+  });
+
+  ScrollTrigger.batch(items, {
+    start: "top 85%",
+    onEnter: (batch) => {
+      gsap.to(batch, {
+        y: 0,
+        autoAlpha: 1,
+        clipPath: "inset(0 0 0% 0)",
+        duration: 1.1,
+        ease: "power4.out",
+        stagger: 0.18
+      });
+    },
+    once: true
+  });
+
+  // micro hover motion (desktop only)
+  // micro hover motion (desktop only)
+  if (!reducedMotion) {
+    items.forEach(item => {
+      const isLeft = item.matches(":nth-child(odd)");
+
+      item.addEventListener("mouseenter", () => {
+        gsap.to(item, {
+          x: isLeft ? 14 : -14, // 🔥 KUNCI PERBAIKAN
+          duration: 0.35,
+          ease: "power3.out"
+        });
+      });
+
+      item.addEventListener("mouseleave", () => {
+        gsap.to(item, {
+          x: 0,
+          duration: 0.45,
+          ease: "power3.out"
+        });
+      });
+    });
+  }
+}
 
 // =============================
 // SKILLS RENDER + ANIM (Batch)
@@ -669,6 +724,7 @@ window.addEventListener("load", async () => {
   initBlobParallax();
   initSectionReveals();
   initScrollTop();
+  initExperienceAwwwards(); // <-- TAMBAHKAN
   initContactForm();
   initVisibilityTitle();
 
@@ -756,8 +812,9 @@ window.addEventListener("load", async () => {
     });
   });
 
-  // refresh once assets loaded
-  if (!reducedMotion) {
-    setTimeout(() => ScrollTrigger.refresh(), 250);
-  }
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      ScrollTrigger.refresh(true);
+    });
+  });
 });
