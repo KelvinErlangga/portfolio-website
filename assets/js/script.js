@@ -38,6 +38,47 @@ function setYear() {
   if (y) y.textContent = new Date().getFullYear();
 }
 
+function initThemeToggle() {
+  const themeToggle = $("#themeToggle");
+  const mobileThemeToggle = $("#mobileThemeToggle");
+  const html = document.documentElement;
+  const icon = themeToggle ? themeToggle.querySelector("i") : null;
+  const mobileIcon = mobileThemeToggle ? mobileThemeToggle.querySelector("i") : null;
+
+  // Check for saved theme preference or default to dark mode
+  const currentTheme = localStorage.getItem("theme") || "dark";
+  if (currentTheme === "light") {
+    html.classList.add("light-mode");
+    if (icon) icon.className = "fas fa-moon";
+    if (mobileIcon) mobileIcon.className = "fas fa-moon";
+  } else {
+    if (icon) icon.className = "fas fa-sun";
+    if (mobileIcon) mobileIcon.className = "fas fa-sun";
+  }
+
+  const toggleTheme = () => {
+    const isLight = html.classList.contains("light-mode");
+    if (isLight) {
+      html.classList.remove("light-mode");
+      localStorage.setItem("theme", "dark");
+      if (icon) icon.className = "fas fa-sun";
+      if (mobileIcon) mobileIcon.className = "fas fa-sun";
+    } else {
+      html.classList.add("light-mode");
+      localStorage.setItem("theme", "light");
+      if (icon) icon.className = "fas fa-moon";
+      if (mobileIcon) mobileIcon.className = "fas fa-moon";
+    }
+  };
+
+  if (themeToggle) {
+    themeToggle.addEventListener("click", toggleTheme);
+  }
+  if (mobileThemeToggle) {
+    mobileThemeToggle.addEventListener("click", toggleTheme);
+  }
+}
+
 function safeJSONFetch(url) {
   return fetch(url).then(r => {
     if (!r.ok) throw new Error(`Failed to fetch ${url}`);
@@ -612,6 +653,7 @@ function initVisibilityTitle() {
 
 window.addEventListener("load", async () => {
   setYear();
+  initThemeToggle();
   
   const deepId = getDeepTargetId();
   
