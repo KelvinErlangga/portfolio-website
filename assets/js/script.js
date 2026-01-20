@@ -222,21 +222,29 @@ function initScrollSpy() {
   if (!navLinks.length) return;
 
   const sections = $$("section[id]");
-  sections.forEach(sec => {
-    ScrollTrigger.create({
-      trigger: sec,
-      start: "top 55%",
-      end: "bottom 55%",
-      onEnter: () => setActive(sec.id),
-      onEnterBack: () => setActive(sec.id)
+
+  function updateActive() {
+    const scrollY = window.scrollY + window.innerHeight / 2;
+
+    sections.forEach(sec => {
+      const rect = sec.getBoundingClientRect();
+      const top = rect.top + window.scrollY;
+      const bottom = top + rect.height;
+
+      if (scrollY >= top && scrollY < bottom) {
+        setActive(sec.id);
+      }
     });
-  });
+  }
 
   function setActive(id) {
     navLinks.forEach(a => a.classList.remove("is-active"));
     const link = $(`.nav-link[href="#${id}"]`);
     if (link) link.classList.add("is-active");
   }
+
+  window.addEventListener("scroll", updateActive);
+  updateActive(); // Initial call
 }
 
 function initNavbarScrollState() {
@@ -714,20 +722,22 @@ window.addEventListener("load", async () => {
 
     interactives.forEach((el) => {
       el.addEventListener("mouseenter", () => {
+        const isLightMode = document.documentElement.classList.contains("light-mode");
         gsap.to(outline, {
           width: 80,
           height: 80,
           borderColor: "transparent",
-          backgroundColor: "rgba(255, 255, 255, 0.1)",
+          backgroundColor: isLightMode ? "rgba(0, 0, 0, 0.1)" : "rgba(255, 255, 255, 0.1)",
           duration: 0.3
         });
       });
 
       el.addEventListener("mouseleave", () => {
+        const isLightMode = document.documentElement.classList.contains("light-mode");
         gsap.to(outline, {
           width: 40,
           height: 40,
-          borderColor: "rgba(255, 255, 255, 0.5)",
+          borderColor: isLightMode ? "rgba(0, 0, 0, 0.5)" : "rgba(255, 255, 255, 0.5)",
           backgroundColor: "transparent",
           duration: 0.3
         });

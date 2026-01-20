@@ -11,9 +11,12 @@
   position: absolute;
   left: max(18px, calc((100vw - var(--container)) / 2 + 18px));
 }
-.projects-header .back-btn{
+.projects-header .header-actions{
   position: absolute;
   right: max(18px, calc((100vw - var(--container)) / 2 + 18px));
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 /* page spacing */
@@ -63,17 +66,40 @@ button.btn{
   color: rgba(255,255,255,0.86);
 }
 
+:root.light-mode .filter-btn {
+  color: rgba(0,0,0,0.86);
+}
+
 /* hover state biar sama rasa dengan nav-link hover */
 .filter-btn:not(.is-active):hover{
   background: rgba(255,255,255,0.08);
   border-color: rgba(255,255,255,0.18);
 }
 
+:root.light-mode .filter-btn:not(.is-active):hover {
+  background: rgba(0,0,0,0.08);
+  border-color: rgba(0,0,0,0.18);
+}
+
 /* responsive align with landing feel */
 @media (max-width: 980px){
   .project-card .project-img{ height: 190px; }
+  .theme-toggle { 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 @media (max-width: 720px){
   .filters{ gap: 8px; }
+  
+  /* Fix header-actions positioning on mobile */
+  .projects-header .header-actions{
+    position: relative;
+    right: auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
 }

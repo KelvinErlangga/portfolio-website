@@ -8,6 +8,53 @@ const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
 gsap.config({ nullTargetWarn: false });
 ScrollTrigger.config({ ignoreMobileResize: true });
 
+/* =============================
+   CUSTOM CURSOR
+============================= */
+function initCustomCursor() {
+  // Skip on mobile/touch devices
+  if (window.innerWidth <= 980) return;
+  
+  const cursorDot = document.createElement('div');
+  const cursorOutline = document.createElement('div');
+  
+  cursorDot.className = 'cursor-dot';
+  cursorOutline.className = 'cursor-outline';
+  
+  document.body.appendChild(cursorDot);
+  document.body.appendChild(cursorOutline);
+  
+  let mouseX = 0, mouseY = 0;
+  let cursorX = 0, cursorY = 0;
+  let outlineX = 0, outlineY = 0;
+  
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  });
+  
+  gsap.ticker.add(() => {
+    const speed = 0.15;
+    cursorX += (mouseX - cursorX) * speed;
+    cursorY += (mouseY - cursorY) * speed;
+    
+    outlineX += (mouseX - outlineX) * speed * 0.5;
+    outlineY += (mouseY - outlineY) * speed * 0.5;
+    
+    gsap.set(cursorDot, { x: cursorX, y: cursorY });
+    gsap.set(cursorOutline, { x: outlineX, y: outlineY });
+  });
+  
+  // Hide cursor when leaving window
+  document.addEventListener('mouseleave', () => {
+    gsap.to([cursorDot, cursorOutline], { autoAlpha: 0, duration: 0.2 });
+  });
+  
+  document.addEventListener('mouseenter', () => {
+    gsap.to([cursorDot, cursorOutline], { autoAlpha: 1, duration: 0.2 });
+  });
+}
+
 function safeJSONFetch(url) {
   return fetch(url).then(r => {
     if (!r.ok) throw new Error(`Failed to fetch ${url}`);
@@ -18,6 +65,36 @@ function safeJSONFetch(url) {
 function setYear() {
   const y = $("#year");
   if (y) y.textContent = new Date().getFullYear();
+}
+
+function initThemeToggle() {
+  const themeToggle = $("#themeToggle");
+  const html = document.documentElement;
+  const icon = themeToggle ? themeToggle.querySelector("i") : null;
+
+  // Check for saved theme preference or default to dark mode
+  const currentTheme = localStorage.getItem("theme") || "dark";
+  if (currentTheme === "light") {
+    html.classList.add("light-mode");
+    if (icon) icon.className = "fas fa-moon";
+  } else {
+    if (icon) icon.className = "fas fa-sun";
+  }
+
+  if (!themeToggle) return;
+
+  themeToggle.addEventListener("click", () => {
+    const isLight = html.classList.contains("light-mode");
+    if (isLight) {
+      html.classList.remove("light-mode");
+      localStorage.setItem("theme", "dark");
+      if (icon) icon.className = "fas fa-sun";
+    } else {
+      html.classList.add("light-mode");
+      localStorage.setItem("theme", "light");
+      if (icon) icon.className = "fas fa-moon";
+    }
+  });
 }
 
 /* =============================
@@ -321,6 +398,8 @@ function initFilters() {
 ============================= */
 window.addEventListener("load", async () => {
   setYear();
+  initThemeToggle();
+  initCustomCursor();
 
   smoothApi = initSmoothScroller();
   initBlobParallax();

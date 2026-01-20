@@ -112,6 +112,14 @@ body{
   transition: width 0.2s, height 0.2s, background-color 0.2s;
 }
 
+:root.light-mode .cursor-dot {
+  background-color: #000;
+}
+
+:root.light-mode .cursor-outline {
+  border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
 #smooth-wrapper{
   position: fixed;
   inset: 0;
@@ -228,6 +236,12 @@ img{ max-width: 100%; display: block; }
 .brand-text{ font-size: 16px; }
 
 .nav-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-actions {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -377,6 +391,22 @@ img{ max-width: 100%; display: block; }
 
 .mobile-theme-toggle {
   margin-bottom: 10px;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid var(--stroke);
+  background: rgba(255,255,255,0.06);
+  color: var(--text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+:root.light-mode .mobile-theme-toggle {
+  background: rgba(0,0,0,0.06);
 }
 .social-btn{
   width: 42px;
@@ -1014,7 +1044,9 @@ img{ max-width: 100%; display: block; }
   }
   
   .theme-toggle {
-    display: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   
   #smooth-wrapper {
@@ -1049,6 +1081,10 @@ img{ max-width: 100%; display: block; }
   .site-header { 
     backdrop-filter: none !important; 
     background: rgba(7,10,18,0.98) !important; 
+  }
+
+  :root.light-mode .site-header {
+    background: rgba(248,249,250,0.98) !important;
   }
 
   /* --- 3. EXPERIENCE TIMELINE (LOGO FIX) --- */
@@ -1159,6 +1195,11 @@ img{ max-width: 100%; display: block; }
   .hero { padding-top: 90px !important; }
   .nav { display: none; }
   .nav-wrapper { display: none; }
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
   .menu-btn { display: inline-flex; align-items: center; justify-content: center; }
   .skills-grid { grid-template-columns: repeat(2, 1fr); }
   .projects-grid { grid-template-columns: 1fr; }
