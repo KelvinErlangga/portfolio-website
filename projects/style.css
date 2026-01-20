@@ -5,15 +5,9 @@
 
 /* header: brand kiri, tombol back kanan, rapi (tanpa nav) */
 .projects-header{
-  justify-content: center;
-}
-.projects-header .brand{
-  position: absolute;
-  left: max(18px, calc((100vw - var(--container)) / 2 + 18px));
+  justify-content: space-between;
 }
 .projects-header .header-actions{
-  position: absolute;
-  right: max(18px, calc((100vw - var(--container)) / 2 + 18px));
   display: flex;
   align-items: center;
   gap: 12px;
