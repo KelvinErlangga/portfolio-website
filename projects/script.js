@@ -85,15 +85,79 @@ function initThemeToggle() {
 
   themeToggle.addEventListener("click", () => {
     const isLight = html.classList.contains("light-mode");
-    if (isLight) {
-      html.classList.remove("light-mode");
-      localStorage.setItem("theme", "dark");
-      if (icon) icon.className = "fas fa-sun";
-    } else {
-      html.classList.add("light-mode");
-      localStorage.setItem("theme", "light");
-      if (icon) icon.className = "fas fa-moon";
+    
+    // Create ripple effect contained within button
+    const ripple = document.createElement('div');
+    ripple.style.cssText = `
+      position: absolute;
+      border-radius: 50%;
+      background: ${isLight ? 'rgba(7,10,18,0.3)' : 'rgba(255,255,255,0.3)'};
+      pointer-events: none;
+      z-index: 1;
+      transform: translate(-50%, -50%) scale(0);
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+      top: 50%;
+      left: 50%;
+      width: 8px;
+      height: 8px;
+    `;
+    
+    // Add ripple to button (not body)
+    if (themeToggle) {
+      themeToggle.style.position = 'relative';
+      themeToggle.style.overflow = 'hidden';
+      themeToggle.appendChild(ripple);
     }
+    
+    // Animate ripple
+    requestAnimationFrame(() => {
+      ripple.style.transform = 'translate(-50%, -50%) scale(3)';
+      ripple.style.opacity = '0';
+    });
+    
+    // Animate button
+    gsap.to(themeToggle, {
+      scale: 0.95,
+      duration: 0.1,
+      ease: "power2.out",
+      onComplete: () => {
+        gsap.to(themeToggle, {
+          scale: 1,
+          duration: 0.25,
+          ease: "elastic.out(1, 0.5)"
+        });
+      }
+    });
+    
+    // Animate icon rotation
+    if (icon) {
+      gsap.to(icon, {
+        rotation: isLight ? 180 : -180,
+        duration: 0.4,
+        ease: "power3.inOut",
+        onComplete: () => {
+          // Update theme and icon
+          if (isLight) {
+            html.classList.remove("light-mode");
+            localStorage.setItem("theme", "dark");
+            if (icon) icon.className = "fas fa-sun";
+          } else {
+            html.classList.add("light-mode");
+            localStorage.setItem("theme", "light");
+            if (icon) icon.className = "fas fa-moon";
+          }
+          // Reset rotation for next animation
+          gsap.set(icon, { rotation: 0 });
+        }
+      });
+    }
+    
+    // Remove ripple after animation
+    setTimeout(() => {
+      if (ripple.parentNode) {
+        ripple.parentNode.removeChild(ripple);
+      }
+    }, 400);
   });
 }
 
