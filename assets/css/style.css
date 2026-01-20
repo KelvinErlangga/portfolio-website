@@ -225,6 +225,7 @@ img{ max-width: 100%; display: block; }
   gap: 10px;
   font-weight: 700;
   letter-spacing: 0.2px;
+  flex-shrink: 0;
 }
 .brand-dot{
   width: 10px;
@@ -239,12 +240,15 @@ img{ max-width: 100%; display: block; }
   display: flex;
   align-items: center;
   gap: 12px;
+  flex: 1; /* Mengisi ruang kosong */
+  justify-content: flex-end; /* Mendorong konten (link) ke ujung kanan */
 }
 
 .header-actions {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex-shrink: 0;
 }
 
 .nav{
