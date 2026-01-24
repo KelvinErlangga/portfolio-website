@@ -5,12 +5,19 @@
 
 /* header: brand kiri, tombol back kanan, rapi (tanpa nav) */
 .projects-header{
-  justify-content: space-between;
+  justify-content: center;
 }
-.projects-header .header-actions{
-  display: flex;
-  align-items: center;
-  gap: 12px;
+.projects-header .brand{
+  position: absolute;
+  left: max(18px, calc((100vw - var(--container)) / 2 + 18px));
+}
+.projects-header .nav-wrapper{
+  position: absolute;
+  right: calc(max(18px, calc((100vw - var(--container)) / 2 + 18px)) + 100px);
+}
+.projects-header .back-btn{
+  position: absolute;
+  right: max(18px, calc((100vw - var(--container)) / 2 + 18px));
 }
 
 /* page spacing */
@@ -78,22 +85,9 @@ button.btn{
 /* responsive align with landing feel */
 @media (max-width: 980px){
   .project-card .project-img{ height: 190px; }
-  .theme-toggle { 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+  .theme-toggle { display: none; }
 }
 
 @media (max-width: 720px){
   .filters{ gap: 8px; }
-  
-  /* Fix header-actions positioning on mobile */
-  .projects-header .header-actions{
-    position: relative;
-    right: auto;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
 }
