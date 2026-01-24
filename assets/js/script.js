@@ -47,11 +47,17 @@ function initThemeToggle() {
 
   // Check for saved theme preference or default to dark mode
   const currentTheme = localStorage.getItem("theme") || "dark";
+  
+  // Always start with dark mode (no light-mode class)
+  html.classList.remove("light-mode");
+  
   if (currentTheme === "light") {
     html.classList.add("light-mode");
     if (icon) icon.className = "fas fa-moon";
     if (mobileIcon) mobileIcon.className = "fas fa-moon";
   } else {
+    // Ensure dark mode is active
+    html.classList.remove("light-mode");
     if (icon) icon.className = "fas fa-sun";
     if (mobileIcon) mobileIcon.className = "fas fa-sun";
   }
