@@ -25,6 +25,21 @@ function initThemeToggle() {
   const html = document.documentElement;
   const icon = themeToggle ? themeToggle.querySelector("i") : null;
 
+  // Update cursor colors based on theme
+  const updateCursorColors = () => {
+    const isLight = html.classList.contains("light-mode");
+    const dot = $(".cursor-dot");
+    const outline = $(".cursor-outline");
+    
+    if (dot) {
+      dot.style.backgroundColor = isLight ? "rgba(0, 0, 0, 0.6)" : "rgba(255, 255, 255, 0.6)";
+    }
+    if (outline) {
+      outline.style.borderColor = isLight ? "rgba(0, 0, 0, 0.5)" : "rgba(255, 255, 255, 0.5)";
+      outline.style.backgroundColor = "transparent";
+    }
+  };
+
   // Check for saved theme preference or default to dark mode
   const currentTheme = localStorage.getItem("theme") || "dark";
   if (currentTheme === "light") {
@@ -33,6 +48,9 @@ function initThemeToggle() {
   } else {
     if (icon) icon.className = "fas fa-sun";
   }
+  
+  // Update cursor colors on init
+  updateCursorColors();
 
   if (!themeToggle) return;
 
@@ -47,6 +65,9 @@ function initThemeToggle() {
       localStorage.setItem("theme", "light");
       if (icon) icon.className = "fas fa-moon";
     }
+    
+    // Update cursor colors after theme change
+    updateCursorColors();
   });
 }
 
@@ -370,6 +391,68 @@ window.addEventListener("load", async () => {
 
   // bind hovers for header buttons (Back) juga
   applyPremiumHovers();
+
+  // Initialize cursor tracking
+  if (!reducedMotion && window.matchMedia("(hover: hover) and (pointer: fine)").matches) { 
+    const dot = $(".cursor-dot");
+    const outline = $(".cursor-outline");
+
+    const xTo = gsap.quickTo(outline, "x", { duration: 0.2, ease: "power3" });
+    const yTo = gsap.quickTo(outline, "y", { duration: 0.2, ease: "power3" });
+
+    window.addEventListener("mousemove", (e) => {
+      gsap.to(dot, { x: e.clientX, y: e.clientY, duration: 0 });
+      
+      xTo(e.clientX);
+      yTo(e.clientY);
+    });
+
+    const interactives = $$("a, button, .card, input, textarea, .skill, .filter-btn");
+
+    interactives.forEach((el) => {
+      el.addEventListener("mouseenter", () => {
+        gsap.to(outline, {
+          width: 80,
+          height: 80,
+          borderColor: "transparent",
+          backgroundColor: "rgba(255, 255, 255, 0.1)",
+          duration: 0.3
+        });
+      });
+
+      el.addEventListener("mouseleave", () => {
+        const isLight = document.documentElement.classList.contains("light-mode");
+        gsap.to(outline, {
+          width: 40,
+          height: 40,
+          borderColor: isLight ? "rgba(0, 0, 0, 0.5)" : "rgba(255, 255, 255, 0.5)",
+          backgroundColor: "transparent",
+          duration: 0.3
+        });
+      });
+    });
+  }
+
+  // Click ripple effect
+  document.addEventListener("click", (e) => {
+    const ripple = document.createElement("div");
+    ripple.className = "click-ripple";
+    document.body.appendChild(ripple);
+
+    const size = 100;
+    ripple.style.width = `${size}px`;
+    ripple.style.height = `${size}px`;
+    ripple.style.left = `${e.clientX - size/2}px`;
+    ripple.style.top = `${e.clientY - size/2 + window.scrollY}px`;
+
+    gsap.to(ripple, {
+      scale: 4,
+      opacity: 0,
+      duration: 0.6,
+      ease: "power2.out",
+      onComplete: () => ripple.remove()
+    });
+  });
 
   if (!reducedMotion) {
     setTimeout(() => {
