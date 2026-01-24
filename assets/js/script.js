@@ -47,17 +47,11 @@ function initThemeToggle() {
 
   // Check for saved theme preference or default to dark mode
   const currentTheme = localStorage.getItem("theme") || "dark";
-  
-  // Always start with dark mode (no light-mode class)
-  html.classList.remove("light-mode");
-  
   if (currentTheme === "light") {
     html.classList.add("light-mode");
     if (icon) icon.className = "fas fa-moon";
     if (mobileIcon) mobileIcon.className = "fas fa-moon";
   } else {
-    // Ensure dark mode is active
-    html.classList.remove("light-mode");
     if (icon) icon.className = "fas fa-sun";
     if (mobileIcon) mobileIcon.className = "fas fa-sun";
   }
@@ -495,31 +489,44 @@ async function loadSkills() {
 
   try {
     const data = await safeJSONFetch("./skills.json");
-    container.innerHTML = data.map(s => `
-      <div class="skill" data-anim="skill">
-        <img src="${s.icon}" alt="${s.name}" loading="lazy" />
-        <span>${s.name}</span>
+    
+    // 1. Kelompokkan data berdasarkan category
+    const groupedSkills = data.reduce((acc, skill) => {
+      const cat = skill.category || "Others";
+      if (!acc[cat]) acc[cat] = [];
+      acc[cat].push(skill);
+      return acc;
+    }, {});
+
+    // 2. Render dengan judul kategori
+    container.innerHTML = Object.keys(groupedSkills).map(category => `
+      <div class="skills-group" data-anim="group">
+        <h3 class="category-name">${category}</h3>
+        <div class="skills-items">
+          ${groupedSkills[category].map(s => `
+            <div class="skill-card" data-anim="skill">
+              <div class="skill-icon">
+                <img src="${s.icon}" alt="${s.name}" loading="lazy" />
+              </div>
+              <span class="skill-name">${s.name}</span>
+            </div>
+          `).join("")}
+        </div>
       </div>
     `).join("");
 
+    // 3. Re-init animasi GSAP
     if (!reducedMotion) {
       const skills = $$('[data-anim="skill"]', container);
-      
-      // LANGSUNG SEMBUNYIKAN
       gsap.set(skills, { y: 20, autoAlpha: 0 });
-
       ScrollTrigger.batch(skills, {
         start: "top 90%",
-        onEnter: (batch) => gsap.fromTo(batch,
-          { y: 20, autoAlpha: 0 },
-          { y: 0, autoAlpha: 1, duration: 0.6, ease: "power3.out", stagger: 0.05 }
-        ),
+        onEnter: (batch) => gsap.to(batch, { y: 0, autoAlpha: 1, duration: 0.6, stagger: 0.05 }),
         once: true
       });
     }
   } catch (e) {
     container.innerHTML = `<p class="muted">Failed to load skills.json</p>`;
-    console.error(e);
   }
 }
 

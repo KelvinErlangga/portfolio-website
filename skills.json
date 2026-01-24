@@ -1,98 +1,187 @@
 [
-    {
-        "name": "ReactJS",
-        "icon": "https://img.icons8.com/external-tal-revivo-color-tal-revivo/48/000000/external-react-a-javascript-library-for-building-user-interfaces-logo-color-tal-revivo.png"
-    },
-    {
-        "name": "NextJS",
-        "icon": "https://img.icons8.com/fluency/48/nextjs.png"
-    },
-    {
-        "name": "ExpressJS",
-        "icon": "https://img.icons8.com/fluency/48/000000/node-js.png"
-    },
-    {
-        "name": "NodeJS",
-        "icon": "https://img.icons8.com/color/48/000000/nodejs.png"
-    },
-    {
-        "name": "Firebase",
-        "icon": "https://img.icons8.com/color/48/000000/firebase.png"
-    },
-    {
-        "name": "React Native",
-        "icon": "https://img.icons8.com/color/48/react-native.png"
-    },
-    {
-        "name": "Flutter",
-        "icon": "https://img.icons8.com/color/48/flutter.png"
-    },
-    {
-        "name": "Laravel",
-        "icon": "https://img.icons8.com/fluency/48/laravel.png"
-    },
-    {
-        "name": "MaterialUI",
-        "icon": "https://img.icons8.com/color/48/000000/material-ui.png"
-    },
-    {
-        "name": "TailwindCSS",
-        "icon": "https://img.icons8.com/color/48/tailwindcss.png"
-    },
-    {
-        "name": "Bootstrap",
-        "icon": "https://img.icons8.com/color/48/000000/bootstrap.png"
-    },
-    {
-        "name": "Sass",
-        "icon": "https://img.icons8.com/color/48/000000/sass.png"
-    },
-    {
-        "name": "HTML5",
-        "icon": "https://img.icons8.com/color/48/000000/html-5--v1.png"
-    },
-    {
-        "name": "CSS3",
-        "icon": "https://img.icons8.com/color/48/000000/css3.png"
-    },
-    {
-        "name": "JavaScript",
-        "icon": "https://img.icons8.com/color/48/000000/javascript--v1.png"
-    },
-    {
-        "name": "PHP",
-        "icon": "https://img.icons8.com/offices/48/000000/php-logo.png"
-    },
-    {
-        "name": "Java",
-        "icon": "https://img.icons8.com/color/48/000000/java-coffee-cup-logo--v1.png"
-    },
-    {
-        "name": "Dart",
-        "icon": "https://img.icons8.com/color/48/dart.png"
-    },
-    {
-        "name": "MongoDB",
-        "icon": "https://img.icons8.com/color/48/000000/mongodb.png"
-    },
-    {
-        "name": "MySQL",
-        "icon": "https://img.icons8.com/color/48/000000/mysql-logo.png"
-    },
-    {
-        "name": "Netlify",
-        "icon": "https://img.icons8.com/external-tal-revivo-shadow-tal-revivo/48/000000/external-netlify-a-cloud-computing-company-that-offers-hosting-and-serverless-backend-services-for-static-websites-logo-shadow-tal-revivo.png"
-    },
-    {
-        "name": "jQuery",
-        "icon": "https://img.icons8.com/ios-filled/48/1169ae/jquery.png"
-    },
-    {
-        "name": "Git VCS",
-        "icon": "https://img.icons8.com/color/48/000000/git.png"
-    },
-    {
-        "name": "GitHub",
-        "icon": "https://img.icons8.com/glyph-neue/48/ffffff/github.png"
-    }
+  {
+    "name": "PHP",
+    "category": "Programming Languages",
+    "icon": "https://img.icons8.com/offices/48/000000/php-logo.png"
+  },
+  {
+    "name": "JavaScript",
+    "category": "Programming Languages",
+    "icon": "https://img.icons8.com/color/48/000000/javascript--v1.png"
+  },
+  {
+    "name": "TypeScript",
+    "category": "Programming Languages",
+    "icon": "https://img.icons8.com/?size=100&id=uJM6fQYqDaZK&format=png&color=000000"
+  },
+  {
+    "name": "Python",
+    "category": "Programming Languages",
+    "icon": "https://img.icons8.com/?size=100&id=13441&format=png&color=000000"
+  },
+  {
+    "name": "Java",
+    "category": "Programming Languages",
+    "icon": "https://img.icons8.com/color/48/000000/java-coffee-cup-logo--v1.png"
+  },
+  {
+    "name": "Dart",
+    "category": "Programming Languages",
+    "icon": "https://img.icons8.com/color/48/dart.png"
+  },
+  {
+    "name": "HTML5",
+    "category": "Frontend Development",
+    "icon": "https://img.icons8.com/color/48/000000/html-5--v1.png"
+  },
+  {
+    "name": "CSS3",
+    "category": "Frontend Development",
+    "icon": "https://img.icons8.com/color/48/000000/css3.png"
+  },
+  {
+    "name": "ReactJS",
+    "category": "Frontend Development",
+    "icon": "https://img.icons8.com/external-tal-revivo-color-tal-revivo/48/000000/external-react-a-javascript-library-for-building-user-interfaces-logo-color-tal-revivo.png"
+  },
+  {
+    "name": "NextJS",
+    "category": "Frontend Development",
+    "icon": "https://img.icons8.com/fluency/48/nextjs.png"
+  },
+  {
+    "name": "Vue.js",
+    "category": "Frontend Development",
+    "icon": "https://img.icons8.com/color/48/000000/vue-js.png"
+  },
+  {
+    "name": "TailwindCSS",
+    "category": "Frontend Development",
+    "icon": "https://img.icons8.com/color/48/tailwindcss.png"
+  },
+  {
+    "name": "MaterialUI",
+    "category": "Frontend Development",
+    "icon": "https://img.icons8.com/color/48/000000/material-ui.png"
+  },
+  {
+    "name": "Bootstrap",
+    "category": "Frontend Development",
+    "icon": "https://img.icons8.com/color/48/000000/bootstrap.png"
+  },
+  {
+    "name": "jQuery",
+    "category": "Frontend Development",
+    "icon": "https://img.icons8.com/ios-filled/48/1169ae/jquery.png"
+  },
+  {
+    "name": "GSAP",
+    "category": "Frontend Development",
+    "icon": "https://avatars.githubusercontent.com/u/2386673?v=4"
+  },
+  {
+    "name": "Laravel",
+    "category": "Backend Development",
+    "icon": "https://img.icons8.com/fluency/48/laravel.png"
+  },
+  {
+    "name": "NodeJS",
+    "category": "Backend Development",
+    "icon": "https://img.icons8.com/color/48/000000/nodejs.png"
+  },
+  {
+    "name": "ExpressJS",
+    "category": "Backend Development",
+    "icon": "https://img.icons8.com/fluency/48/000000/node-js.png"
+  },
+  {
+    "name": "CodeIgniter",
+    "category": "Backend Development",
+    "icon": "https://img.icons8.com/external-tal-revivo-filled-tal-revivo/48/000000/external-codeigniter-is-an-open-source-software-rapid-development-web-framework-logo-filled-tal-revivo.png"
+  },
+  {
+    "name": "Django",
+    "category": "Backend Development",
+    "icon": "https://img.icons8.com/color/48/000000/django.png"
+  },
+  {
+    "name": "Flask",
+    "category": "Backend Development",
+    "icon": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRJY5jcHOkHiOelrWJVl56slOqlZH4-kCA5A&s"
+  },
+  {
+    "name": "React Native",
+    "category": "Mobile Development",
+    "icon": "https://img.icons8.com/color/48/react-native.png"
+  },
+  {
+    "name": "Flutter",
+    "category": "Mobile Development",
+    "icon": "https://img.icons8.com/color/48/flutter.png"
+  },
+  {
+    "name": "MySQL",
+    "category": "Database",
+    "icon": "https://img.icons8.com/color/48/000000/mysql-logo.png"
+  },
+  {
+    "name": "PostgreSQL",
+    "category": "Database",
+    "icon": "https://img.icons8.com/color/48/000000/postgreesql.png"
+  },
+  {
+    "name": "MongoDB",
+    "category": "Database",
+    "icon": "https://img.icons8.com/color/48/000000/mongodb.png"
+  },
+  {
+    "name": "Firebase",
+    "category": "Database",
+    "icon": "https://img.icons8.com/color/48/000000/firebase.png"
+  },
+  {
+    "name": "SQLite",
+    "category": "Database",
+    "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/SQLite370.svg/500px-SQLite370.svg.png"
+  },
+  {
+    "name": "VS Code",
+    "category": "Tools & Testing",
+    "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Visual_Studio_Code_1.35_icon.svg/960px-Visual_Studio_Code_1.35_icon.svg.png"
+  },
+  {
+    "name": "Git VCS",
+    "category": "Tools & Testing",
+    "icon": "https://img.icons8.com/color/48/000000/git.png"
+  },
+  {
+    "name": "Postman",
+    "category": "Tools & Testing",
+    "icon": "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/postman-icon.png"
+  },
+  {
+    "name": "Selenium",
+    "category": "Tools & Testing",
+    "icon": "https://upload.wikimedia.org/wikipedia/commons/d/d5/Selenium_Logo.png"
+  },
+  {
+    "name": "Jest",
+    "category": "Tools & Testing",
+    "icon": "https://img.icons8.com/external-tal-revivo-color-tal-revivo/48/000000/external-jest-can-collect-code-coverage-information-from-entire-projects-logo-color-tal-revivo.png"
+  },
+  {
+    "name": "Vercel",
+    "category": "Tools & Testing",
+    "icon": "https://karmanivero.us/assets/images/logo-vercel.png"
+  },
+  {
+    "name": "Netlify",
+    "category": "Tools & Testing",
+    "icon": "https://img.icons8.com/external-tal-revivo-shadow-tal-revivo/48/000000/external-netlify-a-cloud-computing-company-that-offers-hosting-and-serverless-backend-services-for-static-websites-logo-shadow-tal-revivo.png"
+  },
+  {
+    "name": "RESTful API",
+    "category": "Tools & Testing",
+    "icon": "https://img.icons8.com/color/48/000000/api-settings.png"
+  }
 ]

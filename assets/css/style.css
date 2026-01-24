@@ -1187,9 +1187,121 @@ img{ max-width: 100%; display: block; }
   z-index: 9999;
 }
 
+/* Container Utama Grid 3 Kolom (Tetap) */
+#skillsContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+}
+
+/* Card Kategori */
+.skills-group {
+  background: rgba(255, 255, 255, 0.02);
+  border: 3px solid rgba(255, 255, 255, 0.07);
+  border-radius: 20px;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.4s ease;
+}
+
+:root.light-mode .skills-group {
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* JUDUL: Tipis & Elegant */
+.category-name {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #fff;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+:root.light-mode .category-name {
+  color: var(--text);
+}
+
+.category-name::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: linear-gradient(90deg, rgba(124, 92, 255, 0.3), transparent);
+}
+
+:root.light-mode .category-name::after {
+  background: linear-gradient(90deg, rgba(124, 92, 255, 0.5), transparent);
+}
+
+/* ISI SKILL: Gunakan Grid agar mengisi ruang kosong */
+.skills-items {
+  display: grid;
+  /* Membuat 2 kolom di dalam card agar tidak memanjang ke bawah */
+  grid-template-columns: repeat(2, 1fr); 
+  gap: 10px;
+}
+
+/* ITEM SKILL: Dibuat lebih ramping */
+.skill-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+}
+
+:root.light-mode .skill-card {
+  background: rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.skill-card:hover {
+  background: rgba(124, 92, 255, 0.1);
+  border-color: rgba(124, 92, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+:root.light-mode .skill-card:hover {
+  background: rgba(124, 92, 255, 0.08);
+  border-color: rgba(124, 92, 255, 0.25);
+}
+
+/* Ikon Kecil & Pas */
+.skill-icon img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.skill-name {
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+:root.light-mode .skill-name {
+  color: var(--text);
+}
+
 /* =========================================
    RESPONSIVE MOBILE / TABLET (FINAL FIXED LOGO)
    ========================================= */
+
+@media (max-width: 1024px) {
+  #skillsContainer { grid-template-columns: repeat(2, 1fr); }
+}
 
 @media (max-width: 980px) {
   
@@ -1371,6 +1483,8 @@ img{ max-width: 100%; display: block; }
 }
 
 @media (max-width: 720px) {
+  #skillsContainer { grid-template-columns: 1fr; }
+  
   .hero { padding-top: 90px !important; }
   .nav { display: none; }
   .nav-wrapper { display: none; }
