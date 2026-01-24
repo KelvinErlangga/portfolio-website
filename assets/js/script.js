@@ -45,6 +45,21 @@ function initThemeToggle() {
   const icon = themeToggle ? themeToggle.querySelector("i") : null;
   const mobileIcon = mobileThemeToggle ? mobileThemeToggle.querySelector("i") : null;
 
+  // Update cursor colors based on theme
+  const updateCursorColors = () => {
+    const isLight = html.classList.contains("light-mode");
+    const dot = $(".cursor-dot");
+    const outline = $(".cursor-outline");
+    
+    if (dot) {
+      dot.style.backgroundColor = isLight ? "rgba(0, 0, 0, 0.6)" : "rgba(255, 255, 255, 0.6)";
+    }
+    if (outline) {
+      outline.style.borderColor = isLight ? "rgba(0, 0, 0, 0.5)" : "rgba(255, 255, 255, 0.5)";
+      outline.style.backgroundColor = "transparent";
+    }
+  };
+
   // Check for saved theme preference or default to dark mode
   const currentTheme = localStorage.getItem("theme") || "dark";
   if (currentTheme === "light") {
@@ -55,6 +70,9 @@ function initThemeToggle() {
     if (icon) icon.className = "fas fa-sun";
     if (mobileIcon) mobileIcon.className = "fas fa-sun";
   }
+  
+  // Update cursor colors on init
+  updateCursorColors();
 
   const toggleTheme = () => {
     const isLight = html.classList.contains("light-mode");
@@ -69,6 +87,9 @@ function initThemeToggle() {
       if (icon) icon.className = "fas fa-moon";
       if (mobileIcon) mobileIcon.className = "fas fa-moon";
     }
+    
+    // Update cursor colors after theme change
+    updateCursorColors();
   };
 
   if (themeToggle) {
@@ -713,10 +734,6 @@ window.addEventListener("load", async () => {
   initMagneticHover(".skill", 8);
   initMagneticHover(".project-card", 10);
 
-  initTilt(".hero-card", 5);
-  initTilt(".project-card", 4);
-  initTilt(".skill", 3);
-
   if (!reducedMotion && window.matchMedia("(hover: hover) and (pointer: fine)").matches) { 
     const dot = $(".cursor-dot");
     const outline = $(".cursor-outline");
@@ -745,10 +762,11 @@ window.addEventListener("load", async () => {
       });
 
       el.addEventListener("mouseleave", () => {
+        const isLight = document.documentElement.classList.contains("light-mode");
         gsap.to(outline, {
           width: 40,
           height: 40,
-          borderColor: "rgba(255, 255, 255, 0.5)",
+          borderColor: isLight ? "rgba(0, 0, 0, 0.5)" : "rgba(255, 255, 255, 0.5)",
           backgroundColor: "transparent",
           duration: 0.3
         });

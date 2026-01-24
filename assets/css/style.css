@@ -19,6 +19,8 @@
   --container: 1120px;
   
   --header-h: 72px;
+  --cursor-light: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="white" stroke="%23000" stroke-width="2"/><circle cx="12" cy="12" r="2" fill="%23000"/></svg>') 12 12, auto;
+  --cursor-dark: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="%23000" stroke="white" stroke-width="2"/><circle cx="12" cy="12" r="2" fill="white"/></svg>') 12 12, auto;
 }
 
 :root.light-mode {
@@ -48,6 +50,10 @@ body{
   padding-top: 0 !important;
   cursor: none;
   transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+:root.light-mode body {
+  cursor: none;
 }
 
 .theme-toggle {
@@ -86,9 +92,9 @@ body{
 }
 
 .cursor-dot {
-  width: 8px;
-  height: 8px;
-  background-color: white;
+  width: 4px;
+  height: 4px;
+  background-color: rgba(255, 255, 255, 0.6);
   position: fixed;
   top: 0;
   left: 0;
@@ -96,12 +102,18 @@ body{
   border-radius: 50%;
   z-index: 9999;
   pointer-events: none;
+  transition: background-color 0.3s ease;
+}
+
+:root.light-mode .cursor-dot {
+  background-color: rgba(0, 0, 0, 0.6);
 }
 
 .cursor-outline {
   width: 40px;
   height: 40px;
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  background: transparent;
   position: fixed;
   top: 0;
   left: 0;
@@ -109,7 +121,12 @@ body{
   border-radius: 50%;
   z-index: 9998;
   pointer-events: none;
-  transition: width 0.2s, height 0.2s, background-color 0.2s;
+  transition: width 0.2s, height 0.2s, border-color 0.2s, background-color 0.2s;
+}
+
+:root.light-mode .cursor-outline {
+  border: 2px solid rgba(0, 0, 0, 0.5);
+  background: transparent;
 }
 
 #smooth-wrapper{
@@ -909,9 +926,45 @@ img{ max-width: 100%; display: block; }
 }
 
 @media (max-width: 720px) {
-  .edu-grid {
-    grid-template-columns: 1fr;
-    gap: 16px;
+  .projects-grid{
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+
+  .project-card{
+    border-radius: 8px;
+  }
+
+  .project-img{
+    height: 80px;
+  }
+
+  .project-body{
+    padding: 6px;
+    gap: 4px;
+  }
+
+  .project-body h3{
+    font-size: 11px;
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .project-body p{
+    font-size: 10px;
+    line-height: 1.3;
+    margin: 0;
+  }
+
+  .project-actions{
+    gap: 4px;
+    margin-top: 4px;
+  }
+
+  .small{
+    padding: 4px 6px;
+    font-size: 9px;
+    border-radius: 6px;
   }
 
   .edu-header {
