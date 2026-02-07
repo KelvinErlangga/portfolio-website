@@ -887,7 +887,7 @@ function initVisitorCounter() {
 
   function animateCount(targetCount) {
     const startCount = parseInt(visitorCount.textContent.replace(/,/g, '') || "0");
-    const duration = 500;
+    const duration = 1000;
     const startTime = performance.now();
     
     function update(currentTime) {
@@ -915,10 +915,10 @@ function initVisitorCounter() {
     visitorSlider.classList.add("is-open");
     visitorToggle.classList.add("is-hidden");
     
-    // Auto-close after 10 seconds
+    // Auto-close after 5 seconds
     autoCloseTimeout = setTimeout(() => {
       hideSlider();
-    }, 10000);
+    }, 5000);
   }
 
   function hideSlider() {
