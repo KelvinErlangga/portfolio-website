@@ -887,7 +887,7 @@ function initVisitorCounter() {
 
   function animateCount(targetCount) {
     const startCount = parseInt(visitorCount.textContent.replace(/,/g, '') || "0");
-    const duration = 1000;
+    const duration = 700;
     const startTime = performance.now();
     
     function update(currentTime) {
