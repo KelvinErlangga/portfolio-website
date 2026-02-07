@@ -799,4 +799,95 @@ window.addEventListener("load", async () => {
       ScrollTrigger.refresh(true);
     });
   });
+
+  // Initialize visitor counter
+  initVisitorCounter();
 });
+
+function initVisitorCounter() {
+  const visitorSlider = $("#visitorSlider");
+  const visitorToggle = $("#visitorToggle");
+  const visitorClose = $("#visitorClose");
+  const visitorCount = $("#visitorCount");
+  
+  if (!visitorSlider || !visitorToggle || !visitorClose || !visitorCount) return;
+
+  // Get current visitor count from localStorage or start from 0
+  let currentCount = parseInt(localStorage.getItem("visitorCount") || "0");
+  
+  // Check if this is a new session (first visit in this session)
+  const sessionKey = "visitorSession";
+  const hasVisitedThisSession = sessionStorage.getItem(sessionKey);
+  
+  if (!hasVisitedThisSession) {
+    // Increment count for new visitor/session
+    currentCount++;
+    localStorage.setItem("visitorCount", currentCount.toString());
+    sessionStorage.setItem(sessionKey, "true");
+  }
+  
+  // Display the count
+  visitorCount.textContent = currentCount.toLocaleString();
+
+  let autoCloseTimeout;
+  let isSliderOpen = false;
+
+  function showSlider() {
+    if (isSliderOpen) return;
+    
+    isSliderOpen = true;
+    visitorSlider.classList.add("is-open");
+    visitorToggle.classList.add("is-hidden");
+    
+    // Auto-close after 10 seconds
+    autoCloseTimeout = setTimeout(() => {
+      hideSlider();
+    }, 10000);
+  }
+
+  function hideSlider() {
+    if (!isSliderOpen) return;
+    
+    isSliderOpen = false;
+    
+    // Add closing animation class
+    visitorSlider.classList.add("is-closing");
+    visitorSlider.classList.remove("is-open");
+    
+    // Clear any existing timeout
+    if (autoCloseTimeout) {
+      clearTimeout(autoCloseTimeout);
+      autoCloseTimeout = null;
+    }
+    
+    // Wait for animation to complete, then hide completely and show toggle
+    setTimeout(() => {
+      visitorSlider.classList.remove("is-closing");
+      visitorToggle.classList.remove("is-hidden");
+    }, 400);
+  }
+
+  function toggleSlider() {
+    if (isSliderOpen) {
+      hideSlider();
+    } else {
+      showSlider();
+    }
+  }
+
+  // Event listeners
+  visitorToggle.addEventListener("click", showSlider);
+  visitorClose.addEventListener("click", hideSlider);
+  
+  // Add keyboard support
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && isSliderOpen) {
+      hideSlider();
+    }
+  });
+
+  // Show slider automatically when page loads (with a small delay for better UX)
+  setTimeout(() => {
+    showSlider();
+  }, 2000);
+}
