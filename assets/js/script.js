@@ -812,25 +812,101 @@ function initVisitorCounter() {
   
   if (!visitorSlider || !visitorToggle || !visitorClose || !visitorCount) return;
 
-  // Get current visitor count from localStorage or start from 0
-  let currentCount = parseInt(localStorage.getItem("visitorCount") || "0");
-  
-  // Check if this is a new session (first visit in this session)
-  const sessionKey = "visitorSession";
-  const hasVisitedThisSession = sessionStorage.getItem(sessionKey);
-  
-  if (!hasVisitedThisSession) {
-    // Increment count for new visitor/session
-    currentCount++;
-    localStorage.setItem("visitorCount", currentCount.toString());
-    sessionStorage.setItem(sessionKey, "true");
-  }
-  
-  // Display the count
-  visitorCount.textContent = currentCount.toLocaleString();
+  // JSONBin Configuration
+  const BIN_ID = "698774d4d0ea881f40a8552b"; // Replace with your actual BIN ID
+  const API_KEY = "$2a$10$YV5avs8qha2WsUx2hOHVauNKz/h4EHHEvw7bHSzVhhYRySMnvtZpW"; // Replace with your actual API key
+  const BIN_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
+  const BIN_UPDATE_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
 
+  let currentCount = 0;
   let autoCloseTimeout;
   let isSliderOpen = false;
+
+  // Check if this is a new session
+  const sessionKey = "visitorSession";
+  const hasVisitedThisSession = sessionStorage.getItem(sessionKey);
+
+  async function fetchVisitorCount() {
+    try {
+      const response = await fetch(`${BIN_URL}/latest`, {
+        headers: {
+          'X-Master-Key': API_KEY
+        }
+      });
+      
+      if (!response.ok) throw new Error('Failed to fetch');
+      
+      const data = await response.json();
+      return data.record.visitorCount || 0;
+    } catch (error) {
+      console.warn('Failed to fetch from JSONBin, using localStorage:', error);
+      // Fallback to localStorage
+      return parseInt(localStorage.getItem("visitorCount") || "0");
+    }
+  }
+
+  async function updateVisitorCount(newCount) {
+    try {
+      const response = await fetch(BIN_UPDATE_URL, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Master-Key': API_KEY
+        },
+        body: JSON.stringify({
+          visitorCount: newCount,
+          lastUpdated: new Date().toISOString()
+        })
+      });
+      
+      if (!response.ok) throw new Error('Failed to update');
+      
+      // Also update localStorage as backup
+      localStorage.setItem("visitorCount", newCount.toString());
+      return true;
+    } catch (error) {
+      console.warn('Failed to update JSONBin, using localStorage:', error);
+      // Fallback to localStorage
+      localStorage.setItem("visitorCount", newCount.toString());
+      return false;
+    }
+  }
+
+  async function initializeCount() {
+    currentCount = await fetchVisitorCount();
+    
+    if (!hasVisitedThisSession) {
+      currentCount++;
+      await updateVisitorCount(currentCount);
+      sessionStorage.setItem(sessionKey, "true");
+    }
+    
+    // Display count with animation
+    animateCount(currentCount);
+  }
+
+  function animateCount(targetCount) {
+    const startCount = parseInt(visitorCount.textContent.replace(/,/g, '') || "0");
+    const duration = 1000;
+    const startTime = performance.now();
+    
+    function update(currentTime) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      
+      // Easing function for smooth animation
+      const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+      const current = Math.floor(startCount + (targetCount - startCount) * easeOutQuart);
+      
+      visitorCount.textContent = current.toLocaleString();
+      
+      if (progress < 1) {
+        requestAnimationFrame(update);
+      }
+    }
+    
+    requestAnimationFrame(update);
+  }
 
   function showSlider() {
     if (isSliderOpen) return;
@@ -885,6 +961,9 @@ function initVisitorCounter() {
       hideSlider();
     }
   });
+
+  // Initialize counter
+  initializeCount();
 
   // Show slider automatically when page loads (with a small delay for better UX)
   setTimeout(() => {
