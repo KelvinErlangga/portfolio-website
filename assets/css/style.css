@@ -1659,42 +1659,58 @@ img{ max-width: 100%; display: block; }
   }
 
   /* --- 3. EXPERIENCE TIMELINE (LOGO FIX) --- */
-  .timeline { padding-left: 0; }
+  .timeline {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+  }
   
+  .timeline::before,
+  .timeline-item::before,
+  .timeline-item::after {
+    display: none !important;
+  }
+
   /* Garis Vertikal */
   .timeline::before {
     left: 12px !important; 
     transform: none !important;
   }
 
-  /* Wrapper Item */
   .timeline-item {
-    width: 100% !important;
-    margin: 0 0 12px 0 !important;
-    padding: 0 0 0 42px !important; 
+    /* Gunakan width auto agar padding tidak mendorong elemen keluar layar */
+    width: auto !important; 
+    
+    /* Berikan margin yang layak agar tidak mepet layar */
+    margin: 0 15px 20px 15px !important; 
+    
+    /* Reset padding agar container utama (exp-wrap) yang mengontrol jarak dalam */
+    padding: 0 !important;
+    
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
+    box-sizing: border-box !important;
   }
 
-  /* --- INI PERBAIKANNYA: PAKSA LOGO DI KIRI --- */
-  /* Kita targetkan ganjil DAN genap agar nurut semua */
   .timeline-item:nth-child(odd) .exp-wrap,
   .timeline-item:nth-child(even) .exp-wrap,
   .timeline-item .exp-wrap {
+    /* Pastikan lebar mengikuti container induk yang sudah diberi margin */
+    width: 100% !important; 
+    
     background: rgba(255,255,255,0.06);
     border: 1px solid var(--stroke);
     border-radius: 14px;
-    padding: 10px;
-    width: auto;
-    margin-right: 16px;
+    padding: 16px; /* Jarak konten di dalam card */
+    margin: 0 !important; 
     
     display: flex;
-    /* PAKSA BARIS BIASA (Logo Kiri, Teks Kanan) */
     flex-direction: row !important; 
     align-items: center;
-    gap: 12px;
+    gap: 15px;
     text-align: left !important;
+    box-sizing: border-box !important; /* Wajib agar padding tetap di dalam 100% */
   }
 
   /* Konten Teks juga dipaksa rata kiri */
@@ -1702,21 +1718,19 @@ img{ max-width: 100%; display: block; }
   .timeline-item:nth-child(even) .exp-content,
   .timeline-item .exp-content {
     text-align: left !important;
-    margin: 0 !important; 
-    padding: 0 !important;
-    word-wrap: break-word;
-    word-break: break-word;
-    overflow-wrap: break-word;
-    hyphens: auto;
-    max-width: 100%;
+    flex: 1; /* Ambil sisa ruang yang ada */
+    width: auto;
   }
 
-  /* Logo */
+  .exp-content {
+    flex: 1;
+    min-width: 0; /* Mencegah flex item memaksa lebar melebihi container */
+  }
+
   .exp-logo {
-    width: 48px;
-    height: 48px;
+    width: 50px;
+    height: 50px;
     padding: 6px;
-    border-radius: 10px;
     flex-shrink: 0;
   }
 
@@ -1725,23 +1739,24 @@ img{ max-width: 100%; display: block; }
     left: 4px !important;
     top: 50% !important;
     transform: translateY(-50%) !important;
+    display: none !important;
     z-index: 5;
   }
   
   .timeline-item::after {
     left: 8px !important;
+    display: none !important;
     top: 50% !important;
     transform: translateY(-50%) !important;
     z-index: 6;
   }
   
   /* Typography */
-  .timeline-item h3 { 
-    font-size: 14px; 
-    line-height: 1.2; 
-    margin-top: 0 !important; 
-    margin-bottom: 2px !important; 
-    padding-top: 0 !important;
+  .timeline-item h3 {
+    font-size: 14px;
+    white-space: normal; /* Biarkan teks membungkus jika terlalu panjang */
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   
   .timeline-item .muted { 
