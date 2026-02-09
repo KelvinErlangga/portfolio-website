@@ -777,7 +777,8 @@ img{ max-width: 100%; display: block; }
 }
 
 :root.light-mode .skill span {
-  color: rgba(0,0,0,0.9);
+  color: rgba(0,0,0,0.85);
+  font-weight: 700;
 }
 
 .edu-grid{
@@ -1168,6 +1169,11 @@ img{ max-width: 100%; display: block; }
 
 .exp-content{
   gap: 4px;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  max-width: 100%;
 }
 
 .timeline-item h3{
@@ -1591,6 +1597,11 @@ img{ max-width: 100%; display: block; }
   color: rgba(255, 255, 255, 0.8);
 }
 
+:root.light-mode .skill-name {
+  color: rgba(0, 0, 0, 0.85);
+  font-weight: 600;
+}
+
 /* =========================================
    RESPONSIVE MOBILE / TABLET (FINAL FIXED LOGO)
    ========================================= */
@@ -1693,6 +1704,11 @@ img{ max-width: 100%; display: block; }
     text-align: left !important;
     margin: 0 !important; 
     padding: 0 !important;
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    max-width: 100%;
   }
 
   /* Logo */
