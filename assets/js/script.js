@@ -119,20 +119,31 @@ function initSmoothScroller() {
   const content = document.querySelector("#smooth-content");
   if (!wrapper || !content) return;
 
+  // Reduce ScrollTrigger callback frequency for better performance
+  ScrollTrigger.config({ limitCallbacks: true });
+
   let current = 0;
   let target = 0;
-  const ease = 0.085;
+  const ease = 0.12; // Slightly higher = settles faster, less frames with ScrollTrigger.update()
 
   const dpr = window.devicePixelRatio || 1;
+
+  // Use quickSetter for better transform performance
+  const setTransform = gsap.quickSetter(content, "y", "px");
 
   function setBodyHeight() {
     const h = content.scrollHeight;
     document.body.style.height = `${h}px`;
   }
 
+  // Debounced resize handler
+  let resizeTimer;
   function onResize() {
-    setBodyHeight();
-    ScrollTrigger.refresh();
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      setBodyHeight();
+      ScrollTrigger.refresh();
+    }, 150);
   }
 
   ScrollTrigger.scrollerProxy(document.body, {
@@ -153,15 +164,32 @@ function initSmoothScroller() {
   target = window.scrollY || 0;
   current = target;
 
+  // Threshold: only update ScrollTrigger when meaningful change occurs
+  const THRESHOLD = 0.5;
+  let needsUpdate = true;
+
   gsap.ticker.add(() => {
     target = window.scrollY || 0;
-    current += (target - current) * ease;
+    const delta = target - current;
+
+    // Skip frame entirely if we've settled
+    if (Math.abs(delta) < THRESHOLD && !needsUpdate) return;
+
+    current += delta * ease;
 
     const snapped = Math.round(current * dpr) / dpr;
+    setTransform(-snapped);
 
-    content.style.transform = `translate3d(0, ${-snapped}px, 0)`;
-
-    ScrollTrigger.update();
+    // Only call ScrollTrigger.update when there's meaningful movement
+    if (Math.abs(delta) > THRESHOLD) {
+      ScrollTrigger.update();
+      needsUpdate = true;
+    } else {
+      // Snap to final position and stop updating
+      current = target;
+      setTransform(-target);
+      needsUpdate = false;
+    }
   });
 
   ScrollTrigger.refresh();

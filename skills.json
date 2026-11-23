@@ -183,5 +183,15 @@
     "name": "RESTful API",
     "category": "Tools & Testing",
     "icon": "https://img.icons8.com/color/48/000000/api-settings.png"
+  },
+  {
+    "name": "SAP S/4HANA",
+    "category": "ERP & SAP",
+    "icon": "https://img.icons8.com/color/48/000000/sap.png"
+  },
+  {
+    "name": "ABAP",
+    "category": "ERP & SAP",
+    "icon": "https://img.icons8.com/color/48/000000/code.png"
   }
 ]

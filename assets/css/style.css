@@ -168,6 +168,8 @@ body {
   width: 100%;
   will-change: transform;
   transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   padding-top: var(--header-h);
 }
 
@@ -1233,6 +1235,40 @@ img {
   flex-shrink: 0;
 }
 
+.exp-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.timeline-item:nth-child(odd) .exp-header {
+  justify-content: flex-end;
+}
+
+.exp-linkedin {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #0077b5;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.exp-linkedin:hover {
+  color: #005582;
+  transform: scale(1.15);
+}
+
+:root.light-mode .exp-linkedin {
+  color: #0077b5;
+}
+
+:root.light-mode .exp-linkedin:hover {
+  color: #004182;
+}
+
 .exp-content {
   gap: 4px;
   word-wrap: break-word;
@@ -1922,7 +1958,8 @@ img {
     grid-template-columns: repeat(2, 1fr);
   }
   .projects-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
   }
 
   /* --- FOOTER MOBILE STYLING --- */
