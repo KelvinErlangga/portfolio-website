@@ -1950,8 +1950,8 @@ img {
   .timeline-item .exp-wrap {
     width: 100% !important;
     max-width: 100% !important;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid var(--stroke);
+    background: var(--panel) !important;
+    border: 1px solid var(--stroke) !important;
     border-radius: 14px;
     padding: 16px;
     margin: 0 !important;
@@ -1967,7 +1967,7 @@ img {
   :root.light-mode .timeline-item .exp-wrap,
   :root.light-mode .timeline-item:nth-child(odd) .exp-wrap,
   :root.light-mode .timeline-item:nth-child(even) .exp-wrap {
-    background: rgba(0, 0, 0, 0.04);
+    background: var(--panel) !important;
   }
 
   .timeline-item:nth-child(odd) .exp-content,
@@ -1978,6 +1978,13 @@ img {
     min-width: 0 !important;
     overflow-wrap: break-word !important;
     word-break: break-word !important;
+  }
+
+  .timeline-item:nth-child(odd) .exp-header,
+  .timeline-item:nth-child(even) .exp-header,
+  .exp-header {
+    justify-content: flex-start !important;
+    text-align: left !important;
   }
 
   .exp-logo {
@@ -2235,6 +2242,13 @@ img {
   .timeline-item .exp-wrap {
     gap: 10px !important;
     padding: 12px !important;
+  }
+
+  .timeline-item:nth-child(odd) .exp-header,
+  .timeline-item:nth-child(even) .exp-header,
+  .exp-header {
+    justify-content: flex-start !important;
+    text-align: left !important;
   }
 
   .timeline-item h3 {
