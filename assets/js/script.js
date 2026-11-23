@@ -811,6 +811,7 @@ window.addEventListener("load", async () => {
   initMagneticHover(".social-btn", 8);
   initMagneticHover(".skill", 8);
   initMagneticHover(".project-card", 10);
+  initMagneticHover(".highlight-card", 8);
 
   if (!reducedMotion && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
     const dot = $(".cursor-dot");
