@@ -373,7 +373,6 @@ function initHero() {
   const socials = $$(".hero-socials .social-btn");
   const heroCard = $(".hero-card");
   const heroImg = $(".hero-img");
-  const badge = $(".hero-badge");
   const roleText = $("#roleText");
 
   const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
@@ -383,21 +382,10 @@ function initHero() {
     .fromTo(sub, { y: 22, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.65 }, "-=0.30")
     .fromTo(ctas, { y: 18, autoAlpha: 0 }, { y: 0, autoAlpha: 1, stagger: 0.1, duration: 0.5 }, "-=0.25")
     .fromTo(socials, { y: 14, autoAlpha: 0 }, { y: 0, autoAlpha: 1, stagger: 0.07, duration: 0.42 }, "-=0.30")
-    .fromTo(heroCard, { y: 26, autoAlpha: 0, scale: 0.98 }, { y: 0, autoAlpha: 1, scale: 1, duration: 0.8 }, "-=0.55")
-    .fromTo(badge, { y: 12, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.55 }, "-=0.55");
+    .fromTo(heroCard, { y: 26, autoAlpha: 0, scale: 0.98 }, { y: 0, autoAlpha: 1, scale: 1, duration: 0.8 }, "-=0.55");
 
   if (heroImg) {
     gsap.fromTo(heroImg, { scale: 1.08 }, { scale: 1, duration: 1.2, ease: "power3.out", delay: 0.15 });
-  }
-
-  if (heroCard) {
-    gsap.to(heroCard, {
-      y: -15,
-      duration: 2.6,
-      yoyo: true,
-      repeat: -1,
-      ease: "sine.inOut",
-    });
   }
 
   if (roleText) {
